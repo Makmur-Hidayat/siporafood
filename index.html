@@ -803,6 +803,16 @@
                 const subtotal = cart.reduce((sum, item) => sum + (item.basePrice + item.extras.reduce((acc, e) => acc + e.price, 0)) * item.quantity, 0);
                 const deliveryFee = parseInt(deliveryFeeSpan.textContent.replace(/[^0-9]/g, ''));
                 const totalPayment = subtotal + deliveryFee;
+                const now = new Date();
+                // Format tanggal dan waktu: DD/MM/YYYY HH:MM (misal: 31/05/2025 23:15)
+                const orderDateTime = now.toLocaleString('id-ID', { 
+                    day: '2-digit', 
+                    month: '2-digit', 
+                    year: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: false // Gunakan format 24 jam
+                }).replace(/\./g, ':'); // Ganti titik dengan titik dua untuk waktu jika ada (tergantung regional setting)
 
                 let orderMessage = `Halo Admin, Tolong Proses Orderan saya:\n`;
                 let storeOrders = {};
@@ -821,6 +831,7 @@
                 orderMessage += `*TOTAL PEMBAYARAN: ${formatPrice(totalPayment)}*\n\n`;
                 orderMessage += `Lokasi Pengantaran: ${selectedLocationText}\n`;
                 orderMessage += `Detail Lokasi: ${deliveryDetail}\n`;
+                orderMessage += *Waktu Pesan (Lokal): ${orderDateTime}*\n\n; 
                 orderMessage += `\nTerima kasih sudah Menggunakan aplikasi Sipora Food. mohon tunggu Komfirmasi Kami!`;
 
                 const whatsappUrl = `https://wa.me/${WHATSAPP_ADMIN}?text=${encodeURIComponent(orderMessage)}`;
