@@ -27,9 +27,10 @@
         }
 
         #app-container {
-            max-width: 100%;
-            margin: 0 auto;
+            max-width: 412px; /* MODIFIED: Memaksa lebar maksimal seperti ponsel */
+            margin: 0 auto; /* Menengahkan kontainer di layar yang lebih besar */
             min-height: calc(100vh - 70px);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* MODIFIED: Bayangan opsional untuk tampilan tengah */
         }
 
         .app-header {
@@ -61,6 +62,20 @@
             justify-content: space-around; box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
             border-top: 1px solid var(--border-color); z-index: 1000;
         }
+        /* Jika #app-container memiliki max-width, bottom-navigation mungkin perlu penyesuaian agar tidak melebihi lebar #app-container */
+        /* Salah satu cara adalah dengan mengaturnya juga agar terpusat jika diinginkan seperti app-container */
+        /* Contoh:
+        #bottom-navigation {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            max-width: 412px; // Sama dengan #app-container
+            width: 100%; // Untuk mengisi max-width
+            background-color: var(--card-background); display: flex;
+            justify-content: space-around; box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border-color); z-index: 1000;
+        }
+        */
+
+
         .nav-button {
             background: none; border: none; color: var(--text-color);
             padding: 10px 5px; cursor: pointer; flex-grow: 1; text-align: center;
@@ -111,6 +126,15 @@
             border-radius: 8px; width: 90%; max-width: 700px; max-height: 80vh;
             overflow-y: auto; position: relative;
         }
+        /* Jika #app-container memiliki max-width, modal-content mungkin perlu penyesuaian agar konsisten */
+        /* Contoh untuk modal agar tidak melebihi #app-container jika itu yang diinginkan:
+           .modal-content {
+                ...
+                max-width: calc(412px - 40px); // max-width app dikurangi padding modal
+                ...
+           }
+        */
+
         .close-button {
             color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;
         }
@@ -251,6 +275,15 @@
             border-radius: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1002;
             opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0.5s, bottom 0.5s;
             font-size: 0.9em;
+            /* Jika #app-container memiliki max-width, toast mungkin perlu disesuaikan agar tidak keluar dari batas */
+            /* Contoh:
+            .toast {
+                ...
+                max-width: calc(412px - 40px); // Sesuaikan dengan padding
+                width: auto; // Agar tidak full width jika text pendek
+                ...
+            }
+            */
         }
         .toast.show { opacity: 1; visibility: visible; bottom: 90px; }
         .toast.success { background-color: #4CAF50; }
@@ -815,7 +848,7 @@
                     hour: '2-digit', 
                     minute: '2-digit',
                     hour12: false // Gunakan format 24 jam
-                }).replace(/\./g, ':'); // Ganti titik dengan titik dua untuk waktu jika ada (tergantung regional setting)
+                }).replace(/\./g, ':'); // Ganti titik dengan titik dua untuk waktu jika ada (tergantung regional setting)
 
                 let orderMessage = `Halo Admin, Tolong Proses Orderan saya:\n`;
                 let storeOrders = {};
