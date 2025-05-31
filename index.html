@@ -809,7 +809,7 @@
                 cart.forEach(item => {
                     if (!storeOrders[item.storeName]) storeOrders[item.storeName] = [];
                     let itemText = `*${item.menuName}* - ${item.quantity}x (${formatPrice(item.basePrice)}/item)\n`;
-                    if (item.extras.length > 0) itemText += `  Extra: ${item.extras.map(e => e.name + ' (' + formatPrice(e.price) + ')').join(', ')}\n\n`;
+                    if (item.extras.length > 0) itemText += `  Extra: ${item.extras.map(e => e.name + ' (' + formatPrice(e.price) + ')').join(', ')}\n`;
                     if (item.notes) itemText += `  Catatan: ${item.notes}\n`;
                     storeOrders[item.storeName].push(itemText);
                 });
