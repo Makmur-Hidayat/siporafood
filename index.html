@@ -1,174 +1,941 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Warung Sutan</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 20px;
-      background: #f4f4f4;
-    }
-    .status-bar {
-      text-align: center;
-      font-weight: bold;
-      padding: 10px;
-      color: white;
-      background: #dc3545;
-      margin-bottom: 20px;
-    }
-    .container {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .card {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      width: 125;
-    }
-    select, textarea {
-      width: 100%;
-      margin: 8px 0;
-      padding: 6px;
-    }
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .qty-controls button {
-      background: #f7043f;
-      color: white;
-      border: none;
-      width: 30px;
-      height: 30px;
-      font-size: 18px;
-      border-radius: 4px;
-    }
-    .cart {
-      margin-top: 30px;
-    }
-    .cart-item {
-      background: white;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 6px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-    }
-    .btn-orange {
-      background: #ff7043;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .btn-orange:hover {
-      background: #e05c35;
-    }
-    .notif {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #f7043f;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 8px;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-      z-index: 999;
-    }
-    .notif.show {
-      opacity: 1;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Antar Makanan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --background-color: #F7F7F7;
+            --text-color: #333;
+            --card-background: #FFFFFF;
+            --border-color: #E0E0E0;
+            --disabled-color: #BDBDBD;
+            --overlay-background: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            padding-bottom: 70px; /* Space for fixed bottom navigation */
+        }
+
+        #app-container {
+            max-width: 100%;
+            margin: 0 auto;
+            min-height: calc(100vh - 70px);
+        }
+
+        .app-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .app-header input[type="search"] {
+            width: 90%;
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            font-size: 1em;
+        }
+
+        main {
+            padding: 15px;
+        }
+
+        .page { display: none; }
+        .page.active-page { display: block; }
+
+        #bottom-navigation {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--card-background); display: flex;
+            justify-content: space-around; box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            border-top: 1px solid var(--border-color); z-index: 1000;
+        }
+        .nav-button {
+            background: none; border: none; color: var(--text-color);
+            padding: 10px 5px; cursor: pointer; flex-grow: 1; text-align: center;
+            font-size: 0.8em; display: flex; flex-direction: column;
+            align-items: center; position: relative;
+        }
+        .nav-button i { font-size: 1.5em; margin-bottom: 4px; }
+        .nav-button.active { color: var(--primary-color); }
+        .nav-button .badge {
+            position: absolute; top: 5px; right: 15%; /* Adjust as needed */
+            background-color: red; color: white; border-radius: 50%;
+            padding: 2px 6px; font-size: 0.7em; line-height: 1;
+        }
+
+        #store-list-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* MODIFIED: Selalu 2 kolom */
+            gap: 8px;
+        }
+        .store-card {
+            background-color: var(--card-background); border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden;
+            cursor: pointer; transition: transform 0.2s ease-in-out;
+        }
+        .store-card:hover { transform: translateY(-5px); }
+        .store-image-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+        }
+        .store-image { width: 100%; height: 100%; object-fit: cover; }
+        .store-card.closed .store-image { filter: grayscale(100%) blur(2px); }
+        .store-status-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--overlay-background); color: white; display: flex;
+            justify-content: center; align-items: center; font-size: 1.5em; font-weight: bold;
+        }
+        .store-info { padding: 10px; }
+        .store-name { margin-top: 0; margin-bottom: 5px; color: var(--primary-color); }
+        .store-hours { font-size: 0.9em; color: #555; }
+
+        .modal {
+            display: none; position: fixed; z-index: 1001; left: 0; top: 0;
+            width: 100%; height: 100%; overflow: auto; background-color: var(--overlay-background);
+        }
+        .modal-content {
+            background-color: var(--background-color); margin: 10% auto; padding: 20px;
+            border-radius: 8px; width: 90%; max-width: 700px; max-height: 80vh;
+            overflow-y: auto; position: relative;
+        }
+        .close-button {
+            color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;
+        }
+        .close-button:hover, .close-button:focus { color: black; }
+        #modal-store-name { margin-top: 0; color: var(--primary-color); }
+        #modal-store-closed-message {
+            color: var(--primary-color); font-weight: bold; text-align: center; margin-bottom: 15px;
+            padding: 10px; background-color: #ffebee; border: 1px solid var(--primary-color); border-radius: 4px;
+        }
+        #modal-menu-items-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* MODIFIED: Selalu 2 kolom */
+            gap: 8px;
+        }
+
+        .menu-item-card {
+            background-color: var(--card-background); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 10px; display: flex; flex-direction: column;
+        }
+        .menu-item-card.inactive, .menu-item-card.store-closed { filter: grayscale(80%) opacity(0.6); }
+        .menu-item-card.inactive .add-to-cart-btn,
+        .menu-item-card.store-closed .add-to-cart-btn,
+        .menu-item-card.inactive .menu-item-extras-select,
+        .menu-item-card.store-closed .menu-item-extras-select {
+             pointer-events: none;
+             background-color: var(--disabled-color) !important;
+             color: #888 !important;
+             border-color: var(--disabled-color) !important;
+        }
+         .menu-item-card.inactive .add-to-cart-btn,
+        .menu-item-card.store-closed .add-to-cart-btn {
+            background-color: var(--disabled-color) !important;
+        }
+
+
+        .menu-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .menu-name { margin: 5px 0; font-size: 1.1em; }
+        .menu-price { font-weight: bold; color: var(--secondary-color); margin-bottom: 10px; }
+
+        .menu-extras label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+        .menu-extras select[multiple].menu-item-extras-select {
+            width: 100%;
+            padding: 8px;
+            height: 12px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            min-height: 40px;
+            background-color: white;
+            box-sizing: border-box;
+        }
+        .menu-extras select[multiple].menu-item-extras-select:disabled {
+            background-color: #e9ecef;
+            opacity: 0.7;
+        }
+
+
+        .menu-controls { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
+        .quantity-control { display: flex; align-items: center; }
+        .qty-btn {
+            background-color: var(--secondary-color); color: white; border: none; border-radius: 4px;
+            width: 25px; height: 25px; cursor: pointer; font-weight: bold;
+        }
+        .qty-btn:disabled { background-color: var(--disabled-color); cursor: not-allowed; }
+        .qty-value { margin: 0 10px; font-weight: bold; }
+        .menu-subtotal { font-weight: bold; }
+        .menu-notes {
+            width: 100%;
+            padding: 8px; margin-top: 10px;
+            border: 1px solid var(--border-color); border-radius: 4px;
+            resize: vertical; min-height: 40px; box-sizing: border-box;
+        }
+        .add-to-cart-btn { margin-top: 10px; }
+
+        .button-primary {
+            background-color: var(--primary-color); color: white; padding: 10px 15px;
+            border: none; border-radius: 5px; cursor: pointer; font-weight: bold;
+            transition: background-color 0.2s; width: 100%;
+        }
+        .button-primary:hover { background-color: #E55353; }
+        .button-primary:disabled { background-color: var(--disabled-color); cursor: not-allowed; }
+        .button-secondary {
+            background-color: var(--secondary-color); color: white; padding: 8px 12px;
+            border: none; border-radius: 5px; cursor: pointer; font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .button-secondary:hover { background-color: #3AAFA9; }
+
+        .empty-cart-message, .empty-history-message { text-align: center; color: #777; padding: 20px; font-style: italic; }
+        #cart-items-container { margin-bottom: 20px; }
+        .cart-item-card {
+            background-color: var(--card-background); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 15px; margin-bottom: 10px; display: flex;
+            gap: 15px; align-items: flex-start; position: relative;
+        }
+        .cart-item-image { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; }
+        .cart-item-details { flex-grow: 1; }
+        .cart-item-details h4, .cart-item-details p { margin: 0 0 5px 0; }
+        .cart-item-store { font-size: 0.9em; color: #555; }
+        .cart-item-extras { font-size: 0.9em; color: #777; }
+        .cart-item-notes { font-size: 0.9em; color: #777; font-style: italic; }
+        .cart-item-summary { text-align: right; min-width: 100px; }
+        .cart-item-order-time { font-size: 0.8em; color: #999; display: block; margin-top: 5px; }
+        .remove-from-cart-btn {
+            background: none; border: none; color: var(--primary-color);
+            font-size: 1.2em; cursor: pointer; position: absolute; top: 10px; right: 10px;
+        }
+        #cart-summary {
+            background-color: var(--card-background); padding: 15px; border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #cart-summary p, #cart-summary h3 { margin: 10px 0; }
+        #cart-summary hr { border: none; border-top: 1px solid var(--border-color); margin: 15px 0; }
+
+        .delivery-location-section { margin-top: 15px; border-top: 1px dashed var(--border-color); padding-top: 15px; }
+        .delivery-location-section label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .delivery-location-section select, .delivery-location-section textarea {
+            width: 100%;
+            padding: 10px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 4px;
+            box-sizing: border-box;
+        }
+         .delivery-location-section textarea {
+            min-height: 60px; resize: vertical;
+        }
+
+        .toast {
+            position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+            background-color: var(--text-color); color: white; padding: 12px 20px;
+            border-radius: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1002;
+            opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0.5s, bottom 0.5s;
+            font-size: 0.9em;
+        }
+        .toast.show { opacity: 1; visibility: visible; bottom: 90px; }
+        .toast.success { background-color: #4CAF50; }
+        .toast.error { background-color: #F44336; }
+
+        .history-item-card {
+            background-color: var(--card-background); border: 1px solid var(--border-color);
+            border-radius: 8px; margin-bottom: 15px; padding: 15px;
+        }
+        .history-item-header { border-bottom: 1px dashed var(--border-color); padding-bottom: 10px; margin-bottom: 10px; }
+        .history-item-header h4 { margin: 0; }
+        .history-item-header p { margin: 5px 0 0 0; font-size: 0.9em; color: #555; }
+        .history-item-body .menu-item-entry { font-size: 0.9em; padding: 3px 0; }
+        .history-item-body .menu-item-entry .extras { font-size: 0.85em; color: #666; padding-left: 15px; }
+        .history-item-footer { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border-color); }
+        .history-item-footer p { margin: 5px 0; font-size: 0.9em; }
+        .history-item-footer .reorder-btn { margin-top: 10px; width: auto; }
+
+         /* MODIFIED: Removed media query that forced 1 column layout on small screens */
+        /*
+         @media (max-width: 400px) {
+            #store-list-container, #modal-menu-items-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        */
+    </style>
 </head>
 <body>
-<img src="https://i.ibb.co.com/xKN8r2pj/images.jpg" alt="Ikan" style="width:9cm; height:9cm; display:block; margin:auto;" />
+    <div id="app-container">
+        <div id="page-home" class="page active-page">
+            <header class="app-header">
+                <input type="search" id="search-bar" placeholder="Cari warung atau menu...">
+            </header>
+            <main id="store-list-container"></main>
+        </div>
 
-  <div id="statusBar" class="status-bar">TUTUP</div>
-  <div id="notif" class="notif"></div>
+        <div id="page-keranjang" class="page">
+            <header class="app-header">
+                <h2>Keranjang Saya</h2>
+            </header>
+            <main>
+                <div id="cart-items-container">
+                    <p class="empty-cart-message">Keranjang masih kosong.</p>
+                </div>
+                <div id="cart-summary" style="display: none;">
+                    <p>Subtotal Pesanan: <span id="cart-subtotal">Rp 0</span></p>
+                    <div class="delivery-location-section">
+                        <label for="delivery-location">Pilih Lokasi Antar (Wajib):</label>
+                        <select id="delivery-location">
+                            <option value="">-- Pilih Lokasi --</option>
+                            <option value="0">Km-0</option><option value="1">Km-1</option><option value="2">Km-2</option>
+                            <option value="3">Km-3</option><option value="4">Km-4</option><option value="5">Km-5</option>
+                            <option value="6">Km-6</option><option value="7">Km-7</option><option value="8">Km-8</option>
+                            <option value="9">Km-9</option><option value="10">Km-10</option>
+                        </select>
 
-  <div class="container">
-    <!-- Makanan -->
-    <div class="card">
-      <h3>Makanan</h3>
-      <select id="foodSelect">
-        <option value="">Pilih Menu</option>
-        <option value="menu1-10000">Menu1 - 10.000</option>
-        <option value="menu2-11000">Menu2 - 11.000</option>
-      </select>
-      <select id="foodExtra" multiple>
-        <option value="T1-3000">T1 - 3.000</option>
-        <option value="T2-4000">T2 - 4.000</option>
-      </select>
-      <select id="foodOption">
-        <option value="">Pilih Opsi</option>
-        <option value="Dingin">Dingin</option>
-        <option value="Hangat">Hangat</option>
-        <option value="Kecil">Kecil</option>
-      </select>
-      <div class="qty-controls">
-        <button onclick="updateQty('food', -1)">-</button>
-        <span id="foodQty">1</span>
-        <button onclick="updateQty('food', 1)">+</button>
-        <span>Subtotal: <span id="foodSubtotal">0</span></span>
-      </div>
-      <textarea id="foodNote" placeholder="Catatan (opsional)"></textarea>
-      <button class="btn-orange" onclick="addToCart('food')">Masukkan Keranjang</button>
+                        <label for="delivery-location-detail">Detail Lokasi Antar (Wajib Diisi):</label>
+                        <textarea id="delivery-location-detail" placeholder="Contoh: Rumah No. 10, cat hijau, pagar putih, patokan dekat Masjid Al-Amin"></textarea>
+
+                        <p>Ongkos Kirim: <span id="delivery-fee">Rp 0</span></p>
+                        <small>(Tarif: Rp 6.000 untuk < 2km, selanjutnya + Rp 1.500/km)</small>
+                    </div>
+                    <hr>
+                    <h3>Total Pembayaran: <span id="cart-total-payment">Rp 0</span></h3>
+                    <button id="send-order-btn" class="button-primary" disabled>Kirim Pesanan ke Admin</button>
+                </div>
+            </main>
+        </div>
+
+        <div id="page-kurir" class="page">
+             <header class="app-header"><h2>Kurir</h2></header>
+             <main><p>Anda akan diarahkan ke halaman kurir kami.</p><p><a href="https://facebook.com" target="_blank" id="courier-link-display">Kunjungi Facebook Kurir</a></p></main>
+        </div>
+
+        <div id="page-riwayat" class="page">
+            <header class="app-header"><h2>Riwayat Pesanan</h2></header>
+            <main id="history-items-container"><p class="empty-history-message">Belum ada riwayat pesanan.</p></main>
+        </div>
     </div>
 
-    <!-- Minuman -->
-    <div class="card">
-      <h3>Minuman</h3>
-      <select id="drinkSelect">
-        <option value="">Pilih Menu</option>
-        <option value="menuA-10000">MenuA - 10.000</option>
-        <option value="menuB-11000">MenuB - 11.000</option>
-      </select>
-      <select id="drinkExtra" multiple>
-        <option value="TA-3000">TA - 3.000</option>
-        <option value="TB-4000">TB - 4.000</option>
-      </select>
-      <select id="drinkOption">
-        <option value="">Pilih Opsi</option>
-        <option value="Hangat">Hangat</option>
-        <option value="Menengah">Menengah</option>
-      </select>
-      <div class="qty-controls">
-        <button onclick="updateQty('drink', -1)">-</button>
-        <span id="drinkQty">1</span>
-        <button onclick="updateQty('drink', 1)">+</button>
-        <span>Subtotal: <span id="drinkSubtotal">0</span></span>
-      </div>
-      <textarea id="drinkNote" placeholder="Catatan (opsional)"></textarea>
-      <button class="btn-orange" onclick="addToCart('drink')">Masukkan Keranjang</button>
+    <nav id="bottom-navigation">
+        <button data-page="home" class="nav-button active"><i class="fas fa-home"></i> <span class="nav-text">Home</span></button>
+        <button data-page="keranjang" class="nav-button"><i class="fas fa-shopping-cart"></i> <span class="nav-text">Keranjang</span> <span id="cart-count-badge" class="badge" style="display:none;">0</span></button>
+        <button data-page="kurir" class="nav-button"><i class="fas fa-motorcycle"></i> <span class="nav-text">Kurir</span></button>
+        <button data-page="riwayat" class="nav-button"><i class="fas fa-history"></i> <span class="nav-text">Riwayat</span></button>
+    </nav>
+
+    <div id="store-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">×</span>
+            <h2 id="modal-store-name">Nama Toko</h2>
+            <div id="modal-store-closed-message" style="display:none;">Toko sedang tutup. Anda tidak dapat memesan saat ini.</div>
+            <div id="modal-menu-items-container"></div>
+        </div>
     </div>
-  </div>
 
-  <!-- Keranjang -->
-  <div class="cart">
-    <h3>Keranjang</h3>
-    <div id="cartList"></div>
-    <div>Total Pesanan: <span id="cartTotal">0</span></div>
-    <select id="lokasiAntar" onchange="updateOngkir()">
-      <option value="">Pilih Lokasi Antar</option>
-      <option value="KM 9-6000">KM 9 - 6.000</option>
-      <option value="KM 8-6000">KM 8 - 6.000</option>
-    </select>
-    <div>Total + Ongkir: <span id="totalPlusOngkir">0</span></div>
-    <textarea id="alamatDetail" placeholder="Alamat lengkap: gang, rumah, gedung..."></textarea>
-    <button class="btn-orange" onclick="checkout()">====KIRIM PESANAN KE WHATSAPP ADMIN📤====Pastikan Chatmu terkirim ke Admin yah</button>
-  </div>
+    <div id="toast-notification" class="toast"></div>
 
-  <script>
-    // JavaScript bagian sama seperti yang telah Anda berikan
-  </script>
+    <template id="store-card-template">
+        <div class="store-card">
+            <div class="store-image-container"><img src="" alt="Gambar Toko" class="store-image"><div class="store-status-overlay" style="display:none;">TUTUP</div></div>
+            <div class="store-info"><h3 class="store-name">Nama Toko</h3><p class="store-hours">Jam Operasional: Senin-Sabtu 00:00-00:00</p></div>
+        </div>
+    </template>
+
+    <template id="menu-item-template">
+        <div class="menu-item-card">
+            <img src="" alt="Gambar Menu" class="menu-image">
+            <h4 class="menu-name">Nama Menu</h4>
+            <p class="menu-price">Rp 0</p>
+            <div class="menu-extras">
+                <label for="menu-item-extras-select-template">Extra (Wajib pilih, bisa lebih dari satu):</label>
+                <select multiple class="menu-item-extras-select" id="menu-item-extras-select-template">
+                    </select>
+            </div>
+            <div class="menu-controls">
+                <div class="quantity-control"><button class="qty-btn minus" disabled>-</button><span class="qty-value">1</span><button class="qty-btn plus">+</button></div>
+                <span class="menu-subtotal">Rp 0</span>
+            </div>
+            <textarea class="menu-notes" placeholder="Catatan (opsional)..."></textarea>
+            <button class="add-to-cart-btn button-primary">Tambah ke Keranjang</button>
+        </div>
+    </template>
+
+    <template id="cart-item-template">
+        <div class="cart-item-card">
+            <img src="" alt="Gambar Menu" class="cart-item-image">
+            <div class="cart-item-details">
+                <h4 class="cart-item-name">Nama Menu</h4><p class="cart-item-store">Dari: Nama Toko</p>
+                <p class="cart-item-price">Harga: Rp 0</p><p class="cart-item-extras">Extra: Tidak ada</p>
+                <p class="cart-item-notes">Catatan: -</p>
+            </div>
+            <div class="cart-item-summary">
+                <p>Qty: <span class="cart-item-qty">1</span></p><p>Subtotal: <span class="cart-item-subtotal">Rp 0</span></p>
+                <small class="cart-item-order-time">Dipesan: dd/mm/yyyy hh:mm</small>
+            </div>
+            <button class="remove-from-cart-btn"><i class="fas fa-trash-alt"></i></button>
+        </div>
+    </template>
+
+    <template id="history-item-template">
+        <div class="history-item-card">
+            <div class="history-item-header"><h4>Pesanan dari <span class="history-store-names"></span></h4><p>Waktu Pesan: <span class="history-order-time"></span></p></div>
+            <div class="history-item-body"></div>
+            <div class="history-item-footer">
+                <p>Total: <span class="history-total-amount"></span> (termasuk ongkir Rp <span class="history-delivery-fee"></span>)</p>
+                <p>Lokasi Antar: <span class="history-delivery-location"></span></p>
+                <p>Detail Lokasi: <span class="history-delivery-location-detail"></span></p>
+                <button class="reorder-btn button-secondary">Pesan Ulang</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const storesData = [
+                {
+                    id: "sutan001", nama: "Warung Sutan", jamOperasional: "Senin-minggu 03:00-11:00",
+                    gambar: "https://i.ibb.co.com/ccvWj0ZX/IMG-20250512-015723-2-11zon.jpg", // MODIFIED
+                    lokasitoko: "km-1",
+                    menu: [
+                        { id: "sutan_ayam_bumbu", nama: "Ayam Bumbu", harga: 18000, gambar: "https://via.placeholder.com/300x140.png?text=Ayam+Bumbu", extra: [{ nama: "Nasi Putih", harga: 5000 }, { nama: "Sambal Extra", harga: 2000 }, { nama: "Lalapan", harga: 3000 }], status: "Aktif" }, // MODIFIED
+                        { id: "sutan_ayam_gulai", nama: "Ayam Gulai", harga: 18000, gambar: "https://via.placeholder.com/300x140.png?text=Ayam+Gulai", extra: [{ nama: "Nasi Putih", harga: 5000 }, { nama: "Kerupuk", harga: 1000 }], status: "Aktif" } // MODIFIED
+                    ]
+                },
+                {
+                    id: "meriah002", nama: "Bakso Meriah", jamOperasional: "Senin-minggu 01:00-23:00",
+                    gambar: "https://via.placeholder.com/400x180.png?text=Bakso+Meriah", // MODIFIED
+                    lokasitoko: "km-2",
+                    menu: [
+                        { id: "meriah_bakso_telur", nama: "Bakso Telur", harga: 20000, gambar: "https://i.ibb.co.com/ccvWj0ZX/IMG-20250512-015723-2-11zon.jpg", extra: [{ nama: "Mie Kuning", harga: 0 }, { nama: "Soun", harga: 0 }, { nama: "Pangsit Goreng", harga: 3000 }], status: "Tidak Aktif" }, // MODIFIED
+                        { id: "meriah_mie_ayam", nama: "Mie Ayam", harga: 11000, gambar: "https://i.ibb.co.com/ccvWj0ZX/IMG-20250512-015723-2-11zon.jpg", extra: [{ nama: "Bakso Kecil", harga: 5000 }, { nama: "Ceker Ayam", harga: 4000 }, { nama: "Sayur Extra", harga: 2000 }], status: "Aktif" } // MODIFIED
+                    ]
+                }
+                // You can add more stores here with their respective image URLs
+            ];
+
+            const WHATSAPP_ADMIN = "6285266610522"; // Ganti dengan nomor Admin WA yang benar
+
+            // --- Element Selectors ---
+            const storeListContainer = document.getElementById('store-list-container');
+            const searchBar = document.getElementById('search-bar');
+            const bottomNavButtons = document.querySelectorAll('#bottom-navigation .nav-button');
+            const storeModal = document.getElementById('store-modal');
+            const modalStoreName = document.getElementById('modal-store-name');
+            const modalStoreClosedMessage = document.getElementById('modal-store-closed-message');
+            const modalMenuItemsContainer = document.getElementById('modal-menu-items-container');
+            const closeModalButton = storeModal.querySelector('.close-button');
+            const cartItemsContainer = document.getElementById('cart-items-container');
+            const cartSummaryDiv = document.getElementById('cart-summary');
+            const cartSubtotalSpan = document.getElementById('cart-subtotal');
+            const deliveryLocationSelect = document.getElementById('delivery-location');
+            const deliveryLocationDetailInput = document.getElementById('delivery-location-detail');
+            const deliveryFeeSpan = document.getElementById('delivery-fee');
+            const cartTotalPaymentSpan = document.getElementById('cart-total-payment');
+            const sendOrderBtn = document.getElementById('send-order-btn');
+            const cartCountBadge = document.getElementById('cart-count-badge');
+            const emptyCartMessage = cartItemsContainer.querySelector('.empty-cart-message');
+            const historyItemsContainer = document.getElementById('history-items-container');
+            const emptyHistoryMessage = historyItemsContainer.querySelector('.empty-history-message');
+            const toastNotification = document.getElementById('toast-notification');
+            const storeCardTemplate = document.getElementById('store-card-template');
+            const menuItemTemplate = document.getElementById('menu-item-template');
+            const cartItemTemplate = document.getElementById('cart-item-template');
+            const historyItemTemplate = document.getElementById('history-item-template');
+
+            let cart = loadCart();
+            let orderHistory = loadHistory();
+            let currentOpenStoreId = null;
+            let currentPageId = 'home';
+            let isStoreModalOpen = false;
+
+            // --- UTILITY FUNCTIONS ---
+            function formatPrice(amount) { return `Rp ${amount.toLocaleString('id-ID')}`; }
+            function showToast(message, type = 'info', duration = 3000) {
+                toastNotification.textContent = message;
+                toastNotification.className = 'toast show';
+                if (type === 'success') toastNotification.classList.add('success');
+                else if (type === 'error') toastNotification.classList.add('error');
+                setTimeout(() => { toastNotification.className = 'toast'; }, duration);
+            }
+            function getKmValueFromString(kmString) {
+                if (typeof kmString !== 'string') return null;
+                const match = kmString.match(/km-(\d+)/);
+                return match ? parseInt(match[1]) : null;
+            }
+            function isStoreOpen(jamOperasional) {
+                 if (!jamOperasional || typeof jamOperasional !== 'string') return true; 
+                const now = new Date(); const currentDay = now.getDay(); 
+                const currentTime = now.getHours() * 100 + now.getMinutes(); 
+
+                const parts = jamOperasional.split(" "); if (parts.length < 2) return true; 
+                const daysRange = parts[0]; const timeRange = parts[1];
+
+                const timeParts = timeRange.split("-"); if (timeParts.length < 2) return true; 
+                const openTime = parseInt(timeParts[0].replace(":", ""));
+                const closeTime = parseInt(timeParts[1].replace(":", ""));
+                if (isNaN(openTime) || isNaN(closeTime)) return true; 
+
+                const dayMap = { "minggu": 0, "senin": 1, "selasa": 2, "rabu": 3, "kamis": 4, "jumat": 5, "sabtu": 6 };
+                let isOpenDay = false;
+                if (daysRange.includes("-")) { 
+                    const [startDayStr, endDayStr] = daysRange.toLowerCase().split("-");
+                    const startDay = dayMap[startDayStr]; const endDay = dayMap[endDayStr];
+                    if (startDay === undefined || endDay === undefined) return true; 
+
+                    if (startDay <= endDay) isOpenDay = currentDay >= startDay && currentDay <= endDay;
+                    else isOpenDay = currentDay >= startDay || currentDay <= endDay; 
+                } else { 
+                    const singleDay = dayMap[daysRange.toLowerCase()];
+                    if (singleDay === undefined) return true; 
+                    isOpenDay = currentDay === singleDay;
+                }
+
+                if (!isOpenDay) return false;
+
+                if (openTime <= closeTime) return currentTime >= openTime && currentTime < closeTime;
+                else return currentTime >= openTime || currentTime < closeTime; 
+            }
+
+            // --- LOCAL STORAGE ---
+            function saveCart() { localStorage.setItem('foodOrderCart', JSON.stringify(cart)); updateCartBadge(); }
+            function loadCart() { const storedCart = localStorage.getItem('foodOrderCart'); return storedCart ? JSON.parse(storedCart) : []; }
+            function saveHistory() { localStorage.setItem('foodOrderHistory', JSON.stringify(orderHistory)); }
+            function loadHistory() { const storedHistory = localStorage.getItem('foodOrderHistory'); return storedHistory ? JSON.parse(storedHistory) : []; }
+
+            // --- NAVIGATION & MODAL HANDLING ---
+            function showPage(pageIdToShow) {
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active-page'));
+                const targetPage = document.getElementById(`page-${pageIdToShow}`);
+                if (targetPage) targetPage.classList.add('active-page');
+                bottomNavButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.page === pageIdToShow));
+                currentPageId = pageIdToShow;
+                if (!history.state || history.state.page !== pageIdToShow || history.state.modal) { 
+                    history.pushState({ page: pageIdToShow }, `Page ${pageIdToShow}`, `#${pageIdToShow}`);
+                }
+                if (pageIdToShow === 'keranjang') renderCart();
+                if (pageIdToShow === 'riwayat') renderHistory();
+            }
+
+            function openMenuModal(storeId) {
+                const store = storesData.find(s => s.id === storeId); if (!store) return;
+                currentOpenStoreId = storeId;
+                modalStoreName.textContent = store.nama;
+                modalMenuItemsContainer.innerHTML = '';
+                const storeCurrentlyOpen = isStoreOpen(store.jamOperasional);
+                modalStoreClosedMessage.style.display = storeCurrentlyOpen ? 'none' : 'block';
+
+                store.menu.forEach(menuItem => {
+                    const itemCard = menuItemTemplate.content.cloneNode(true).querySelector('.menu-item-card');
+                    itemCard.dataset.menuId = menuItem.id;
+                    itemCard.querySelector('.menu-image').src = menuItem.gambar; // Uses the URL from storesData
+                    itemCard.querySelector('.menu-name').textContent = menuItem.nama;
+                    itemCard.querySelector('.menu-price').textContent = formatPrice(menuItem.harga);
+
+                    const extrasSelect = itemCard.querySelector('.menu-item-extras-select');
+                    extrasSelect.innerHTML = '';
+                    const uniqueSelectId = `extras-select-${menuItem.id}-${Date.now()}`;
+                    extrasSelect.id = uniqueSelectId;
+                    itemCard.querySelector('label[for="menu-item-extras-select-template"]').setAttribute('for', uniqueSelectId);
+
+
+                    menuItem.extra.forEach((extra) => {
+                        const option = document.createElement('option');
+                        option.value = `${extra.nama}|${extra.harga}`;
+                        option.textContent = `${extra.nama} (${formatPrice(extra.harga)})`;
+                        option.dataset.name = extra.nama;
+                        option.dataset.price = extra.harga;
+                        extrasSelect.appendChild(option);
+                    });
+
+                    const addToCartButton = itemCard.querySelector('.add-to-cart-btn');
+                    if (menuItem.status.toLowerCase() !== 'aktif' || !storeCurrentlyOpen) {
+                        itemCard.classList.add(menuItem.status.toLowerCase() !== 'aktif' ? 'inactive' : 'store-closed');
+                        addToCartButton.disabled = true;
+                        extrasSelect.disabled = true;
+                    } else {
+                        extrasSelect.disabled = false;
+                    }
+
+                    const qtyValueSpan = itemCard.querySelector('.qty-value');
+                    const subtotalSpan = itemCard.querySelector('.menu-subtotal');
+                    const minusBtn = itemCard.querySelector('.qty-btn.minus');
+                    const plusBtn = itemCard.querySelector('.qty-btn.plus');
+
+                    function updateItemSubtotal() {
+                        let currentQty = parseInt(qtyValueSpan.textContent);
+                        let basePrice = menuItem.harga;
+                        let extrasPrice = 0;
+                        Array.from(extrasSelect.selectedOptions).forEach(optionNode => {
+                            extrasPrice += parseInt(optionNode.dataset.price);
+                        });
+                        const totalItemPrice = (basePrice + extrasPrice) * currentQty;
+                        subtotalSpan.textContent = formatPrice(totalItemPrice);
+                        minusBtn.disabled = currentQty <= 1;
+                    }
+
+                    extrasSelect.addEventListener('change', updateItemSubtotal);
+                    minusBtn.addEventListener('click', () => { if (parseInt(qtyValueSpan.textContent) > 1) { qtyValueSpan.textContent = parseInt(qtyValueSpan.textContent) - 1; updateItemSubtotal(); }});
+                    plusBtn.addEventListener('click', () => { qtyValueSpan.textContent = parseInt(qtyValueSpan.textContent) + 1; updateItemSubtotal(); });
+                    updateItemSubtotal();
+
+                    addToCartButton.addEventListener('click', () => {
+                        const currentStore = storesData.find(s => s.id === currentOpenStoreId);
+                        if (!currentStore || !isStoreOpen(currentStore.jamOperasional)) { showToast('Toko sedang tutup.', 'error'); return; }
+                        if (cart.length > 0 && cart[0].storeId !== store.id) { showToast('Hanya bisa pesan dari satu toko. Kosongkan keranjang dahulu.', 'error'); return; }
+
+                        const selectedOptionsNodes = Array.from(extrasSelect.selectedOptions);
+                        if (selectedOptionsNodes.length === 0) { 
+                            showToast('Pilih minimal satu opsi Extra untuk menu ini.', 'error');
+                            extrasSelect.focus();
+                            return;
+                        }
+
+                        const selectedExtras = selectedOptionsNodes.map(optionNode => ({
+                            name: optionNode.dataset.name,
+                            price: parseInt(optionNode.dataset.price)
+                        }));
+                        const quantity = parseInt(qtyValueSpan.textContent);
+                        const notes = itemCard.querySelector('.menu-notes').value.trim();
+                        const sortedSelectedExtras = selectedExtras.sort((a,b) => a.name.localeCompare(b.name));
+
+                        const existingItemIndex = cart.findIndex(item =>
+                            item.menuId === menuItem.id && item.storeId === store.id &&
+                            JSON.stringify(item.extras.sort((a,b) => a.name.localeCompare(b.name))) === JSON.stringify(sortedSelectedExtras)
+                        );
+                        if (existingItemIndex > -1) { showToast(`${menuItem.nama} sudah ada di keranjang dengan extra sama. Ubah Qty di keranjang.`, 'info'); return; }
+
+                        cart.push({
+                            id: `${store.id}-${menuItem.id}-${Date.now()}`, storeId: store.id, storeName: store.nama,
+                            menuId: menuItem.id, menuName: menuItem.nama, menuImage: menuItem.gambar, // menuImage also gets the URL
+                            basePrice: menuItem.harga, extras: sortedSelectedExtras, quantity: quantity, notes: notes,
+                            orderTime: new Date().toISOString()
+                        });
+                        saveCart();
+                        showToast(`${menuItem.nama} berhasil ditambahkan!`, 'success');
+                    });
+                    modalMenuItemsContainer.appendChild(itemCard);
+                });
+                storeModal.style.display = 'block'; isStoreModalOpen = true;
+                history.pushState({ modal: 'storeMenuOpen', storeId: store.id, pageBeforeModal: currentPageId }, "Menu Toko", `#${currentPageId}/toko/${store.id}`);
+            }
+
+            function closeMenuModal() {
+                storeModal.style.display = 'none'; isStoreModalOpen = false; currentOpenStoreId = null;
+                if (history.state && history.state.modal === 'storeMenuOpen') history.back(); 
+            }
+            closeModalButton.addEventListener('click', closeMenuModal);
+            window.addEventListener('click', (event) => { if (event.target == storeModal) closeMenuModal(); });
+
+            bottomNavButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const pageName = button.dataset.page;
+                    if (pageName === 'kurir') {
+                        const courierLinkElement = document.getElementById('courier-link-display');
+                        if (courierLinkElement) window.open(courierLinkElement.href, '_blank');
+                        return;
+                    }
+                    if (currentPageId !== pageName) showPage(pageName);
+                });
+            });
+
+            window.addEventListener('popstate', (event) => {
+                const state = event.state;
+                if (isStoreModalOpen) { 
+                    storeModal.style.display = 'none'; isStoreModalOpen = false; currentOpenStoreId = null;
+                    const pageToRestore = (state && state.pageBeforeModal) ? state.pageBeforeModal : 'home';
+                    showPage(pageToRestore); 
+                     history.replaceState({ page: pageToRestore }, `Page ${pageToRestore}`, `#${pageToRestore}`);
+                    return;
+                }
+
+                if (state && state.page) {
+                    showPage(state.page);
+                } else if (state && state.modal === 'storeMenuOpen' && state.pageBeforeModal) {
+                    storeModal.style.display = 'none'; isStoreModalOpen = false; currentOpenStoreId = null;
+                    showPage(state.pageBeforeModal);
+                     history.replaceState({ page: state.pageBeforeModal }, `Page ${state.pageBeforeModal}`, `#${state.pageBeforeModal}`);
+                } else if (!state && location.hash === "") { 
+                     showPage('home');
+                     history.replaceState({ page: 'home' }, 'Home', '#home'); 
+                } else if (!state && currentPageId !== 'home') { 
+                     showPage('home');
+                     history.replaceState({ page: 'home' }, 'Home', '#home');
+                }
+            });
+
+            // --- HOME PAGE ---
+            function renderStores(filterText = "") {
+                storeListContainer.innerHTML = '';
+                const lowerFilterText = filterText.toLowerCase();
+                const filteredStores = storesData.filter(store =>
+                    store.nama.toLowerCase().includes(lowerFilterText) ||
+                    store.menu.some(menuItem => menuItem.nama.toLowerCase().includes(lowerFilterText))
+                );
+                if (filteredStores.length === 0) { storeListContainer.innerHTML = '<p>Tidak ada toko atau menu yang cocok.</p>'; return; }
+                filteredStores.forEach(store => {
+                    const card = storeCardTemplate.content.cloneNode(true).querySelector('.store-card');
+                    card.dataset.storeId = store.id;
+                    card.querySelector('.store-image').src = store.gambar;  // Uses the URL from storesData
+                    card.querySelector('.store-name').textContent = store.nama;
+                    card.querySelector('.store-hours').textContent = `Jam: ${store.jamOperasional}`;
+                    const overlay = card.querySelector('.store-status-overlay');
+                    if (!isStoreOpen(store.jamOperasional)) { card.classList.add('closed'); overlay.style.display = 'flex'; }
+                    else { overlay.style.display = 'none'; }
+                    card.addEventListener('click', () => openMenuModal(store.id));
+                    storeListContainer.appendChild(card);
+                });
+            }
+            searchBar.addEventListener('input', (e) => renderStores(e.target.value));
+
+            // --- CART PAGE ---
+            function renderCart() {
+                cartItemsContainer.innerHTML = '';
+                if (cart.length === 0) {
+                    if (emptyCartMessage) emptyCartMessage.style.display = 'block';
+                    cartSummaryDiv.style.display = 'none';
+                    deliveryLocationSelect.value = ""; deliveryLocationDetailInput.value = "";
+                    updateCartBadge(); updateCartSummary(); return;
+                }
+                if (emptyCartMessage) emptyCartMessage.style.display = 'none';
+                cartSummaryDiv.style.display = 'block';
+                cart.forEach((item, index) => {
+                    const card = cartItemTemplate.content.cloneNode(true).querySelector('.cart-item-card');
+                    card.dataset.cartItemId = item.id;
+                    card.querySelector('.cart-item-image').src = item.menuImage; // Uses the URL stored in the cart item
+                    card.querySelector('.cart-item-name').textContent = item.menuName;
+                    card.querySelector('.cart-item-store').textContent = `Dari: ${item.storeName}`;
+                    card.querySelector('.cart-item-price').textContent = `Harga: ${formatPrice(item.basePrice)}`;
+                    const extrasText = item.extras.length > 0 ? item.extras.map(e => `${e.name} (+${formatPrice(e.price)})`).join(', ') : 'Tidak ada';
+                    card.querySelector('.cart-item-extras').textContent = `Extra: ${extrasText}`;
+                    card.querySelector('.cart-item-notes').textContent = `Catatan: ${item.notes || '-'}`;
+                    card.querySelector('.cart-item-qty').textContent = item.quantity;
+                    const itemSubtotal = (item.basePrice + item.extras.reduce((sum, e) => sum + e.price, 0)) * item.quantity;
+                    card.querySelector('.cart-item-subtotal').textContent = formatPrice(itemSubtotal);
+                    card.querySelector('.cart-item-order-time').textContent = `Ditambahkan: ${new Date(item.orderTime).toLocaleString('id-ID')}`;
+                    card.querySelector('.remove-from-cart-btn').addEventListener('click', () => {
+                        cart.splice(index, 1); saveCart(); renderCart();
+                        showToast('Item dihapus dari keranjang.', 'info');
+                    });
+                    cartItemsContainer.appendChild(card);
+                });
+                updateCartSummary(); updateCartBadge();
+            }
+            function calculateDeliveryFee(storeKm, destinationKm) {
+                if (storeKm === null || destinationKm === null || isNaN(storeKm) || isNaN(destinationKm)) return 0;
+                const distance = Math.abs(destinationKm - storeKm);
+                if (distance < 2) return 6000;
+                else return 6000 + (Math.max(0, Math.ceil(distance) - 1) * 1500); 
+            }
+            function updateCartSummary() {
+                const subtotal = cart.reduce((sum, item) => sum + (item.basePrice + item.extras.reduce((acc, extra) => acc + extra.price, 0)) * item.quantity, 0);
+                cartSubtotalSpan.textContent = formatPrice(subtotal);
+                let deliveryFee = 0;
+                const selectedLocationVal = deliveryLocationSelect.value;
+                const locationDetailFilled = deliveryLocationDetailInput.value.trim() !== "";
+
+                if (cart.length > 0 && selectedLocationVal !== "") {
+                    const firstItemStoreId = cart[0].storeId;
+                    const store = storesData.find(s => s.id === firstItemStoreId);
+                    if (store && store.lokasitoko) {
+                        const storeKm = getKmValueFromString(store.lokasitoko);
+                        const destinationKm = parseInt(selectedLocationVal);
+                        deliveryFee = calculateDeliveryFee(storeKm, destinationKm);
+                    }
+                }
+                deliveryFeeSpan.textContent = formatPrice(deliveryFee);
+                const totalPayment = subtotal + deliveryFee;
+                cartTotalPaymentSpan.textContent = formatPrice(totalPayment);
+
+                const canOrder = cart.length > 0;
+                sendOrderBtn.disabled = !canOrder || selectedLocationVal === "" || !locationDetailFilled;
+                deliveryLocationSelect.disabled = !canOrder;
+                deliveryLocationDetailInput.disabled = !canOrder;
+            }
+            deliveryLocationSelect.addEventListener('change', updateCartSummary);
+            deliveryLocationDetailInput.addEventListener('input', updateCartSummary);
+            function updateCartBadge() {
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCountBadge.style.display = count > 0 ? 'inline-block' : 'none';
+                cartCountBadge.textContent = count;
+            }
+
+            // --- SEND ORDER & HISTORY ---
+            sendOrderBtn.addEventListener('click', () => {
+                if (cart.length === 0) { showToast('Keranjang Anda kosong.', 'error'); return; }
+                const selectedLocationValue = deliveryLocationSelect.value;
+                const selectedLocationText = deliveryLocationSelect.options[deliveryLocationSelect.selectedIndex].text;
+                const deliveryDetail = deliveryLocationDetailInput.value.trim();
+
+                if (selectedLocationValue === "") { showToast('Mohon pilih lokasi pengantaran.', 'error'); deliveryLocationSelect.focus(); return; }
+                if (deliveryDetail === "") { showToast('Mohon isi detail lokasi pengantaran.', 'error'); deliveryLocationDetailInput.focus(); return; }
+
+                const subtotal = cart.reduce((sum, item) => sum + (item.basePrice + item.extras.reduce((acc, e) => acc + e.price, 0)) * item.quantity, 0);
+                const deliveryFee = parseInt(deliveryFeeSpan.textContent.replace(/[^0-9]/g, ''));
+                const totalPayment = subtotal + deliveryFee;
+
+                let orderMessage = `Halo Admin, saya mau pesan:\n\n`;
+                let storeOrders = {};
+                cart.forEach(item => {
+                    if (!storeOrders[item.storeName]) storeOrders[item.storeName] = [];
+                    let itemText = `*${item.menuName}* - ${item.quantity}x (${formatPrice(item.basePrice)}/item)\n`;
+                    if (item.extras.length > 0) itemText += `  Extra: ${item.extras.map(e => e.name + ' (' + formatPrice(e.price) + ')').join(', ')}\n`;
+                    if (item.notes) itemText += `  Catatan: ${item.notes}\n`;
+                    storeOrders[item.storeName].push(itemText);
+                });
+                for (const storeName in storeOrders) {
+                    orderMessage += `Dari Toko: *${storeName}*\n`; orderMessage += storeOrders[storeName].join(''); orderMessage += `\n`;
+                }
+                orderMessage += `Subtotal Pesanan: *${formatPrice(subtotal)}*\n`;
+                orderMessage += `Ongkos Kirim: *${formatPrice(deliveryFee)}*\n`;
+                orderMessage += `*TOTAL PEMBAYARAN: ${formatPrice(totalPayment)}*\n\n`;
+                orderMessage += `Lokasi Pengantaran: ${selectedLocationText}\n`;
+                orderMessage += `Detail Lokasi: ${deliveryDetail}\n`;
+                orderMessage += `\nTerima kasih!`;
+
+                const whatsappUrl = `https://wa.me/${WHATSAPP_ADMIN}?text=${encodeURIComponent(orderMessage)}`;
+
+                const historyEntry = {
+                    id: `hist-${Date.now()}`, items: JSON.parse(JSON.stringify(cart)),
+                    totalAmount: totalPayment, deliveryFee: deliveryFee, subtotal: subtotal,
+                    deliveryLocation: selectedLocationText,
+                    deliveryLocationDetail: deliveryDetail,
+                    orderTimestamp: new Date().toISOString()
+                };
+
+                const lastHistory = orderHistory.length > 0 ? orderHistory[orderHistory.length - 1] : null;
+                if (!lastHistory ||
+                    JSON.stringify(lastHistory.items.map(i => ({s:i.storeId, m:i.menuId, q:i.quantity, e:i.extras.map(ex => ({n:ex.name, p:ex.price})).sort((a,b)=>a.n.localeCompare(b.n)) }))) !==
+                    JSON.stringify(historyEntry.items.map(i => ({s:i.storeId, m:i.menuId, q:i.quantity, e:i.extras.map(ex => ({n:ex.name, p:ex.price})).sort((a,b)=>a.n.localeCompare(b.n)) }))) ||
+                    lastHistory.deliveryLocation !== historyEntry.deliveryLocation ||
+                    lastHistory.deliveryLocationDetail !== historyEntry.deliveryLocationDetail ||
+                    lastHistory.totalAmount !== historyEntry.totalAmount) {
+                    orderHistory.push(historyEntry); saveHistory();
+                }
+
+
+                cart = []; saveCart();
+                deliveryLocationSelect.value = ""; deliveryLocationDetailInput.value = "";
+                renderCart();
+                showToast('Pesanan dialihkan ke WhatsApp Admin...', 'success');
+                window.open(whatsappUrl, '_blank'); showPage('riwayat');
+            });
+            function renderHistory() {
+                historyItemsContainer.innerHTML = '';
+                if (orderHistory.length === 0) { if(emptyHistoryMessage) emptyHistoryMessage.style.display = 'block'; return; }
+                if(emptyHistoryMessage) emptyHistoryMessage.style.display = 'none';
+                [...orderHistory].reverse().forEach(histEntry => { 
+                    const card = historyItemTemplate.content.cloneNode(true).querySelector('.history-item-card');
+                    const storeNames = [...new Set(histEntry.items.map(item => item.storeName))].join(', ');
+                    card.querySelector('.history-store-names').textContent = storeNames;
+                    card.querySelector('.history-order-time').textContent = new Date(histEntry.orderTimestamp).toLocaleString('id-ID');
+                    const historyBody = card.querySelector('.history-item-body');
+                    histEntry.items.forEach(item => {
+                        const itemDiv = document.createElement('div'); itemDiv.className = 'menu-item-entry';
+                        let itemText = `${item.quantity}x ${item.menuName} (${formatPrice(item.basePrice)})`;
+                        if (item.storeName !== storeNames && storeNames.includes(',')) itemText += ` (dari ${item.storeName})`; 
+                        itemDiv.textContent = itemText;
+                        if (item.extras.length > 0) {
+                            const extrasDiv = document.createElement('div'); extrasDiv.className = 'extras';
+                            extrasDiv.textContent = `Extra: ${item.extras.map(e => e.name).join(', ')}`;
+                            itemDiv.appendChild(extrasDiv);
+                        }
+                        historyBody.appendChild(itemDiv);
+                    });
+                    card.querySelector('.history-total-amount').textContent = formatPrice(histEntry.totalAmount);
+                    card.querySelector('.history-delivery-fee').textContent = formatPrice(histEntry.deliveryFee);
+                    card.querySelector('.history-delivery-location').textContent = histEntry.deliveryLocation || '-';
+                    card.querySelector('.history-delivery-location-detail').textContent = histEntry.deliveryLocationDetail || '-';
+
+                    card.querySelector('.reorder-btn').addEventListener('click', () => {
+                        const targetStoreId = histEntry.items[0]?.storeId;
+                        const targetStore = storesData.find(s => s.id === targetStoreId);
+                        if (!targetStore || !isStoreOpen(targetStore.jamOperasional)) { showToast('Toko asal pesanan ini sedang tutup atau item tidak lagi tersedia.', 'error'); return; }
+
+                        if (cart.length > 0) {
+                            if(cart[0].storeId !== targetStoreId) { 
+                                if (!confirm('Keranjang berisi item dari toko lain. Kosongkan keranjang dan lanjutkan dengan pesanan ini?')) return;
+                                cart = []; 
+                            } else if (!confirm('Ganti isi keranjang saat ini dengan item dari pesanan riwayat ini?')) { 
+                                return;
+                            }
+                        }
+
+                        const reorderableItems = histEntry.items.filter(histItem => {
+                            const storeOfHistItem = storesData.find(s => s.id === histItem.storeId);
+                            if (!storeOfHistItem || !isStoreOpen(storeOfHistItem.jamOperasional)) return false;
+                            const menuItem = storeOfHistItem.menu.find(m => m.id === histItem.menuId);
+                            return menuItem && menuItem.status.toLowerCase() === 'aktif';
+                        });
+
+                        if (reorderableItems.length !== histEntry.items.length) {
+                            showToast('Beberapa item dari pesanan ini tidak lagi tersedia atau toko yang bersangkutan tutup. Hanya item yang tersedia yang ditambahkan.', 'info');
+                        }
+                        if(reorderableItems.length === 0) {
+                            showToast('Semua item dari pesanan ini tidak lagi tersedia atau toko yang bersangkutan tutup.', 'error');
+                            return;
+                        }
+
+                        cart = JSON.parse(JSON.stringify(reorderableItems)); 
+                        cart.forEach(item => item.orderTime = new Date().toISOString()); 
+                        saveCart();
+
+                        const historicLocationText = histEntry.deliveryLocation;
+                        const optionInSelect = Array.from(deliveryLocationSelect.options).find(opt => opt.text === historicLocationText);
+                        if (optionInSelect) deliveryLocationSelect.value = optionInSelect.value;
+                        else deliveryLocationSelect.value = ""; 
+                        deliveryLocationDetailInput.value = histEntry.deliveryLocationDetail || ""; 
+
+                        showToast('Pesanan berhasil dimuat ulang ke keranjang.', 'success');
+                        showPage('keranjang'); 
+                    });
+                    historyItemsContainer.appendChild(card);
+                });
+            }
+
+            // --- INITIALIZATION ---
+            renderStores();
+            const validPages = ['home', 'keranjang', 'riwayat']; 
+            const hashParts = window.location.hash.substring(1).split('/');
+            const pageFromUrl = hashParts[0];
+            let startPage = validPages.includes(pageFromUrl) ? pageFromUrl : 'home';
+
+            showPage(startPage);
+            history.replaceState({ page: startPage }, `Page ${startPage}`, `#${startPage}`); 
+
+            if (hashParts.length > 2 && hashParts[1] === 'toko' && hashParts[2]) {
+                const storeIdFromUrl = hashParts[2];
+                const storeExists = storesData.find(s => s.id === storeIdFromUrl);
+                if (storeExists) {
+                    if (currentPageId !== storeExists.pageBeforeModal && validPages.includes(storeExists.pageBeforeModal)) {
+                        // If the modal was bookmarked, and a different page was its origin.
+                        // This logic is a bit complex due to the popstate handling.
+                        // For simplicity, we might just show the home page then the modal.
+                        // Or ensure the `pageBeforeModal` is correctly used.
+                        // Current popstate logic aims to restore the page before modal.
+                    } else if (currentPageId !== 'home' && startPage === 'home'){ // Default to home if no better context
+                        showPage('home');
+                        history.replaceState({ page: 'home' }, `Page home`, `#home`);
+                    }
+                    openMenuModal(storeIdFromUrl);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
-
