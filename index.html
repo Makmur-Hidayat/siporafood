@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pesan Antar Makanan</title>
+    <title>Sipora Food</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
@@ -299,20 +299,17 @@
                 <div id="cart-summary" style="display: none;">
                     <p>Subtotal Pesanan: <span id="cart-subtotal">Rp 0</span></p>
                     <div class="delivery-location-section">
-                        <label for="delivery-location">Pilih Lokasi Antar (Wajib):</label>
                         <select id="delivery-location">
-                            <option value="">-- Pilih Lokasi --</option>
+                            <option value="">-- 📍Pilih Lokasi --</option>
                             <option value="0">Km-0</option><option value="1">Km-1</option><option value="2">Km-2</option>
                             <option value="3">Km-3</option><option value="4">Km-4</option><option value="5">Km-5</option>
                             <option value="6">Km-6</option><option value="7">Km-7</option><option value="8">Km-8</option>
                             <option value="9">Km-9</option><option value="10">Km-10</option>
                         </select>
-
-                        <label for="delivery-location-detail">Detail Lokasi Antar (Wajib Diisi):</label>
-                        <textarea id="delivery-location-detail" placeholder="Contoh: Rumah No. 10, cat hijau, pagar putih, patokan dekat Masjid Al-Amin"></textarea>
+                        <textarea id="delivery-location-detail" placeholder="Detail alamat antar Contoh: Rumah No. 10, cat hijau, pagar putih, patokan dekat Masjid Al-Amin"></textarea>
 
                         <p>Ongkos Kirim: <span id="delivery-fee">Rp 0</span></p>
-                        <small>(Tarif: Rp 6.000 untuk < 2km, selanjutnya + Rp 1.500/km)</small>
+                        <small>Pastikan chatmu terkirim ke Whatsapp admin agar orderanmu di proses yah</small>
                     </div>
                     <hr>
                     <h3>Total Pembayaran: <span id="cart-total-payment">Rp 0</span></h3>
@@ -408,6 +405,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const storesData = [
+
                 {
                     id: "sutan001", nama: "Warung Sutan", jamOperasional: "Senin-minggu 03:00-11:00",
                     gambar: "https://i.ibb.co.com/ccvWj0ZX/IMG-20250512-015723-2-11zon.jpg", // MODIFIED
@@ -425,7 +423,24 @@
                         { id: "meriah_bakso_telur", nama: "Bakso Telur", harga: 20000, gambar: "https://i.ibb.co.com/ccvWj0ZX/IMG-20250512-015723-2-11zon.jpg", extra: [{ nama: "Mie Kuning", harga: 0 }, { nama: "Soun", harga: 0 }, { nama: "Pangsit Goreng", harga: 3000 }], status: "Tidak Aktif" }, // MODIFIED
                         { id: "meriah_mie_ayam", nama: "Mie Ayam", harga: 11000, gambar: "https://i.ibb.co.com/ccvWj0ZX/IMG-20250512-015723-2-11zon.jpg", extra: [{ nama: "Bakso Kecil", harga: 5000 }, { nama: "Ceker Ayam", harga: 4000 }, { nama: "Sayur Extra", harga: 2000 }], status: "Aktif" } // MODIFIED
                     ]
+                },
+{ id: "mbaknur003", nama: "Warung Mbak Nur", jamOperasional: "Senin-minggu 14:00-20:00",
+                    gambar: "https://i.ibb.co.com/rGBCKJx7/mbaknur.jpg", // MODIFIED
+                    lokasitoko: "km-8",
+                    menu: [
+{ id: "pecel_ayam", nama: "Pecel ayam", harga: 17000, gambar: "https://i.ibb.co.com/mrMH0kd0/Pecelayam.jpg", extra: [{nama: "pakai nasi", harga: 5000 }, { nama: "Tanpa nasi", harga: 0 }], status: "Aktif" }, 
+
+{ id: "pecel_lele", nama: "Pecel lele", harga: 17000, gambar: "https://i.ibb.co.com/qLYgSjM3/Pecellele.jpg", extra: [{nama: "pakai nasi", harga: 5000 },{ nama: "Tanpa nasi", harga: 0 }], status: "Aktif" }, 
+
+ { id: "mie_ayam_bakso", nama: "mie ayam bakso", harga: 20000, gambar: "https://i.ibb.co.com/8n7KkGFZ/Mieayambakso.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+ { id: "mie_ayam", nama: "mie ayam", harga: 15000, gambar: "https://i.ibb.co.com/q3L8myYy/Mieayam.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+ { id: "bakso", nama: "bakso", harga: 15000, gambar: "https://i.ibb.co.com/vChxBwKY/Bakso.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                    ]
                 }
+
+
                 // You can add more stores here with their respective image URLs
             ];
 
