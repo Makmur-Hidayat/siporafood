@@ -804,24 +804,24 @@
                 const deliveryFee = parseInt(deliveryFeeSpan.textContent.replace(/[^0-9]/g, ''));
                 const totalPayment = subtotal + deliveryFee;
 
-                let orderMessage = `Halo Admin, saya mau pesan:\n`;
+                let orderMessage = `Halo Admin, Tolong Proses Orderan saya:\n`;
                 let storeOrders = {};
                 cart.forEach(item => {
                     if (!storeOrders[item.storeName]) storeOrders[item.storeName] = [];
                     let itemText = `*${item.menuName}* - ${item.quantity}x (${formatPrice(item.basePrice)}/item)\n`;
-                    if (item.extras.length > 0) itemText += `  Extra: ${item.extras.map(e => e.name + ' (' + formatPrice(e.price) + ')').join(', ')}\n`;
+                    if (item.extras.length > 0) itemText += `  Extra: ${item.extras.map(e => e.name + ' (' + formatPrice(e.price) + ')').join(', ')}\n\n`;
                     if (item.notes) itemText += `  Catatan: ${item.notes}\n`;
                     storeOrders[item.storeName].push(itemText);
                 });
                 for (const storeName in storeOrders) {
-                    orderMessage += `Dari Toko: *${storeName}*\n\n`; orderMessage += storeOrders[storeName].join(''); orderMessage += `\n`;
+                    orderMessage += `di: *${storeName}*\n\n`; orderMessage += storeOrders[storeName].join(''); orderMessage += `\n\n`;
                 }
                 orderMessage += `Subtotal Pesanan: *${formatPrice(subtotal)}*\n`;
                 orderMessage += `Ongkos Kirim: *${formatPrice(deliveryFee)}*\n`;
                 orderMessage += `*TOTAL PEMBAYARAN: ${formatPrice(totalPayment)}*\n\n`;
                 orderMessage += `Lokasi Pengantaran: ${selectedLocationText}\n`;
                 orderMessage += `Detail Lokasi: ${deliveryDetail}\n`;
-                orderMessage += `\nTerima kasih!`;
+                orderMessage += `\nTerima kasih sudah Menggunakan aplikasi Sipora Food. mohon tunggu Komfirmasi Kami!`;
 
                 const whatsappUrl = `https://wa.me/${WHATSAPP_ADMIN}?text=${encodeURIComponent(orderMessage)}`;
 
