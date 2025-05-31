@@ -831,8 +831,8 @@
                 orderMessage += `*TOTAL PEMBAYARAN: ${formatPrice(totalPayment)}*\n\n`;
                 orderMessage += `Lokasi Pengantaran: ${selectedLocationText}\n`;
                 orderMessage += `Detail Lokasi: ${deliveryDetail}\n`;
-                orderMessage += `*Waktu Pesan (Lokal): ${orderDateTime}*\n`; 
-                orderMessage += `\nTerima kasih sudah Menggunakan aplikasi Sipora Food. mohon tunggu Komfirmasi Kami!`;
+                orderMessage += `*Waktu Order: ${orderDateTime}*\n`; 
+                orderMessage += `Terima kasih sudah Menggunakan aplikasi *Sipora Food*. mohon tunggu Konfirmasi Kami!`;
 
                 const whatsappUrl = `https://wa.me/${WHATSAPP_ADMIN}?text=${encodeURIComponent(orderMessage)}`;
 
