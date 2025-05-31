@@ -814,7 +814,7 @@
                     storeOrders[item.storeName].push(itemText);
                 });
                 for (const storeName in storeOrders) {
-                    orderMessage += `di: *${storeName}*\n\n`; orderMessage += storeOrders[storeName].join(''); orderMessage += `\n\n`;
+                    orderMessage += `di: *${storeName}*\n\n`; orderMessage += storeOrders[storeName].join(''); orderMessage += `\n`;
                 }
                 orderMessage += `Subtotal Pesanan: *${formatPrice(subtotal)}*\n`;
                 orderMessage += `Ongkos Kirim: *${formatPrice(deliveryFee)}*\n`;
