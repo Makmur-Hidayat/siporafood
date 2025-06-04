@@ -27,10 +27,10 @@
         }
 
         #app-container {
-            max-width: 412px; /* MODIFIED: Memaksa lebar maksimal seperti ponsel */
-            margin: 0 auto; /* Menengahkan kontainer di layar yang lebih besar */
+            max-width: 412px;
+            margin: 0 auto;
             min-height: calc(100vh - 70px);
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* MODIFIED: Bayangan opsional untuk tampilan tengah */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
         .app-header {
@@ -61,20 +61,11 @@
             background-color: var(--card-background); display: flex;
             justify-content: space-around; box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
             border-top: 1px solid var(--border-color); z-index: 1000;
+            /* Penyesuaian untuk app-container dengan max-width */
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 412px; /* Sama dengan #app-container */
         }
-        /* Jika #app-container memiliki max-width, bottom-navigation mungkin perlu penyesuaian agar tidak melebihi lebar #app-container */
-        /* Salah satu cara adalah dengan mengaturnya juga agar terpusat jika diinginkan seperti app-container */
-        /* Contoh:
-        #bottom-navigation {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-            max-width: 412px; // Sama dengan #app-container
-            width: 100%; // Untuk mengisi max-width
-            background-color: var(--card-background); display: flex;
-            justify-content: space-around; box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-            border-top: 1px solid var(--border-color); z-index: 1000;
-        }
-        */
-
 
         .nav-button {
             background: none; border: none; color: var(--text-color);
@@ -85,14 +76,14 @@
         .nav-button i { font-size: 1.5em; margin-bottom: 4px; }
         .nav-button.active { color: var(--primary-color); }
         .nav-button .badge {
-            position: absolute; top: 5px; right: 15%; /* Adjust as needed */
+            position: absolute; top: 5px; right: 15%;
             background-color: red; color: white; border-radius: 50%;
             padding: 2px 6px; font-size: 0.7em; line-height: 1;
         }
 
         #store-list-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* MODIFIED: Selalu 2 kolom */
+            grid-template-columns: repeat(2, 1fr);
             gap: 8px;
         }
         .store-card {
@@ -105,6 +96,7 @@
             position: relative;
             width: 100%;
             height: 120px;
+            background-color: #eee; /* Warna placeholder jika gambar belum load */
         }
         .store-image { width: 100%; height: 100%; object-fit: cover; }
         .store-card.closed .store-image { filter: grayscale(100%) blur(0px); }
@@ -123,17 +115,12 @@
         }
         .modal-content {
             background-color: var(--background-color); margin: 10% auto; padding: 20px;
-            border-radius: 8px; width: 90%; max-width: 700px; max-height: 80vh;
+            border-radius: 8px; width: 90%; 
+            max-height: 80vh;
             overflow-y: auto; position: relative;
+            /* Penyesuaian untuk app-container dengan max-width */
+            max-width: calc(412px - 40px); /* max-width app dikurangi padding modal */
         }
-        /* Jika #app-container memiliki max-width, modal-content mungkin perlu penyesuaian agar konsisten */
-        /* Contoh untuk modal agar tidak melebihi #app-container jika itu yang diinginkan:
-           .modal-content {
-                ...
-                max-width: calc(412px - 40px); // max-width app dikurangi padding modal
-                ...
-           }
-        */
 
         .close-button {
             color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;
@@ -146,7 +133,7 @@
         }
         #modal-menu-items-container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* MODIFIED: Selalu 2 kolom */
+            grid-template-columns: repeat(2, 1fr);
             gap: 8px;
         }
 
@@ -169,13 +156,13 @@
             background-color: var(--disabled-color) !important;
         }
 
-
         .menu-image {
             width: 100%;
             height: 140px;
             object-fit: cover;
             border-radius: 4px;
             margin-bottom: 10px;
+            background-color: #eee; /* Warna placeholder */
         }
         .menu-name { margin: 5px 0; font-size: 1.1em; }
         .menu-price { font-weight: bold; color: var(--secondary-color); margin-bottom: 10px; }
@@ -188,18 +175,17 @@
         .menu-extras select[multiple].menu-item-extras-select {
             width: 100%;
             padding: 8px;
-            height: 25px;
+            height: 25px; /* Ini mungkin terlalu kecil untuk multiple select */
             border-radius: 4px;
             border: 1px solid var(--border-color);
-            min-height: 35px;
-            background-color: #c9c9c9;
+            min-height: 35px; /* Sesuaikan ini */
+            background-color: #c9c9c9; /* Kustomisasi warna dropdown */
             box-sizing: border-box;
         }
         .menu-extras select[multiple].menu-item-extras-select:disabled {
             background-color: #e9ecef;
             opacity: 0.7;
         }
-
 
         .menu-controls { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; }
         .quantity-control { display: flex; align-items: center; }
@@ -239,7 +225,10 @@
             border-radius: 8px; padding: 15px; margin-bottom: 10px; display: flex;
             gap: 15px; align-items: flex-start; position: relative;
         }
-        .cart-item-image { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; }
+        .cart-item-image { 
+            width: 80px; height: 80px; object-fit: cover; border-radius: 4px;
+            background-color: #eee; /* Warna placeholder */
+        }
         .cart-item-details { flex-grow: 1; }
         .cart-item-details h4, .cart-item-details p { margin: 0 0 5px 0; }
         .cart-item-store { font-size: 0.9em; color: #555; }
@@ -275,15 +264,9 @@
             border-radius: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1002;
             opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0.5s, bottom 0.5s;
             font-size: 0.9em;
-            /* Jika #app-container memiliki max-width, toast mungkin perlu disesuaikan agar tidak keluar dari batas */
-            /* Contoh:
-            .toast {
-                ...
-                max-width: calc(412px - 40px); // Sesuaikan dengan padding
-                width: auto; // Agar tidak full width jika text pendek
-                ...
-            }
-            */
+            /* Penyesuaian untuk app-container dengan max-width */
+            max-width: calc(412px - 40px); 
+            width: auto; 
         }
         .toast.show { opacity: 1; visibility: visible; bottom: 90px; }
         .toast.success { background-color: #4CAF50; }
@@ -302,17 +285,52 @@
         .history-item-footer p { margin: 5px 0; font-size: 0.9em; }
         .history-item-footer .reorder-btn { margin-top: 10px; width: auto; }
 
-         /* MODIFIED: Removed media query that forced 1 column layout on small screens */
-        /*
-         @media (max-width: 400px) {
-            #store-list-container, #modal-menu-items-container {
-                grid-template-columns: 1fr;
-            }
+        /* STYLES UNTUK GLOBAL LOADER */
+        #app-loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9); /* Latar belakang semi-transparan */
+            z-index: 2000; /* Pastikan di atas segalanya */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease-in-out;
         }
-        */
+
+        .loader-spinner {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid var(--primary-color); /* Warna primer Anda */
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* STYLES UNTUK LAZY LOAD IMAGE */
+        .lazy-image {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .lazy-image.loaded {
+            opacity: 1;
+        }
+        /* Warna placeholder diatur per elemen gambar di atas, misal .store-image-container, .menu-image */
+
     </style>
 </head>
 <body>
+    <div id="app-loader-overlay">
+        <div class="loader-spinner"></div>
+    </div>
+
     <div id="app-container">
         <div id="page-home" class="page active-page">
             <header class="app-header">
@@ -340,7 +358,6 @@
                             <option value="9">Km-9</option><option value="10">Km-10</option>
                         </select>
                         <textarea id="delivery-location-detail" placeholder="Detail Lokasi Antar, Misal: Gang bulian Rumah ke-4 sebelah kiri atau. A/n Nia RSUD Ruang Kainau"></textarea>
-
                         <p>Ongkir: <span id="delivery-fee">Rp 0</span></p>
                         <small>Pastikan chatmu terkirim ke Whatsapp admin agar orderanmu di proses yah</small>
                     </div>
@@ -382,20 +399,23 @@
 
     <template id="store-card-template">
         <div class="store-card">
-            <div class="store-image-container"><img src="" alt="Gambar Toko" class="store-image"><div class="store-status-overlay" style="display:none;">TUTUP</div></div>
+            <div class="store-image-container">
+                <img data-src="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Gambar Toko" class="store-image lazy-image">
+                <div class="store-status-overlay" style="display:none;">TUTUP</div>
+            </div>
             <div class="store-info"><h3 class="store-name">Nama Toko</h3><p class="store-hours">Jam Operasional: Senin-Sabtu 00:00-00:00</p></div>
         </div>
     </template>
 
     <template id="menu-item-template">
         <div class="menu-item-card">
-            <img src="" alt="Gambar Menu" class="menu-image">
+            <img data-src="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Gambar Menu" class="menu-image lazy-image">
             <h4 class="menu-name">Nama Menu</h4>
             <p class="menu-price">Rp 0</p>
             <div class="menu-extras">
                 <label for="menu-item-extras-select-template">Extra*:</label>
                 <select multiple class="menu-item-extras-select" id="menu-item-extras-select-template">
-                    </select>
+                </select>
             </div>
             <div class="menu-controls">
                 <div class="quantity-control"><button class="qty-btn minus" disabled>-</button><span class="qty-value">1</span><button class="qty-btn plus">+</button></div>
@@ -408,7 +428,7 @@
 
     <template id="cart-item-template">
         <div class="cart-item-card">
-            <img src="" alt="Gambar Menu" class="cart-item-image">
+            <img data-src="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Gambar Menu" class="cart-item-image lazy-image">
             <div class="cart-item-details">
                 <h4 class="cart-item-name">Nama Menu</h4><p class="cart-item-store">Dari: Nama Toko</p>
                 <p class="cart-item-price">Harga: Rp 0</p><p class="cart-item-extras">Extra: Tidak ada</p>
@@ -437,37 +457,39 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const storesData = [
+            // --- GLOBAL LOADER ELEMENTS ---
+            const appLoaderOverlay = document.getElementById('app-loader-overlay');
 
-{
+            function showAppLoader() {
+                if (appLoaderOverlay) appLoaderOverlay.style.display = 'flex';
+            }
+            function hideAppLoader() {
+                if (appLoaderOverlay) appLoaderOverlay.style.display = 'none';
+            }
+
+            // Tampilkan loader segera
+            showAppLoader();
+
+            const storesData = [
+                {
                     id: "dapoerwawao003", nama: "Dapoer Wawa", jamOperasional: "Senin-minggu 00:00-24:00",
-                    gambar: "https://i.ibb.co.com/gMv6VZv8/1746720000453v-DAPOERWAWA050163b66a0266b3a-2-11zon.jpg", // MODIFIED
+                    gambar: "https://i.ibb.co.com/gMv6VZv8/1746720000453v-DAPOERWAWA050163b66a0266b3a-2-11zon.jpg", 
                     lokasitoko: "km-8",
                     menu: [
-{ id: "sk_ayam_geprek", nama: "Ayam geprek", harga: 20000, gambar: "https://i.ibb.co.com/xq07tNLj/4915c85728836.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-
-{ id: "sk_pecel-lele", nama: "Pecel lele", harga: 17000, gambar: "https://i.ibb.co.com/JFd7dGnS/3fe1541ea240913106.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-
-{ id: "mie Goreng_telur", nama: "mie Goreng pedas + telur", harga: 15000, gambar: "https://i.ibb.co.com/G4DStk1N/838a56678862.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-
-{ id: "teh_hijau_original", nama: "teh hijau Original", harga: 5000, gambar: "https://i.ibb.co.com/35LmPnvL/a0d1f08963198.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-
-{ id: "teh_hijau_susu", nama: "teh hijau + Susu", harga: 6000, gambar: "https://i.ibb.co.com/jPZgXPRM/2282969931308.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-
-{ id: "es_blend_beludru", nama: "es blend Beludru", harga: 6000, gambar: "https://i.ibb.co.com/v0wd2Bk/c55c3b896614.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-
-{ id: "es_blend_coklat", nama: "es blend coklat Sultan", harga: 6000, gambar: "https://i.ibb.co.com/whj0WJKh/5a0df23762975.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-]       
+                        { id: "sk_ayam_geprek", nama: "Ayam geprek", harga: 20000, gambar: "https://i.ibb.co.com/xq07tNLj/4915c85728836.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "sk_pecel-lele", nama: "Pecel lele", harga: 17000, gambar: "https://i.ibb.co.com/JFd7dGnS/3fe1541ea240913106.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "mie Goreng_telur", nama: "mie Goreng pedas + telur", harga: 15000, gambar: "https://i.ibb.co.com/G4DStk1N/838a56678862.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                        { id: "teh_hijau_original", nama: "teh hijau Original", harga: 5000, gambar: "https://i.ibb.co.com/35LmPnvL/a0d1f08963198.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                        { id: "teh_hijau_susu", nama: "teh hijau + Susu", harga: 6000, gambar: "https://i.ibb.co.com/jPZgXPRM/2282969931308.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                        { id: "es_blend_beludru", nama: "es blend Beludru", harga: 6000, gambar: "https://i.ibb.co.com/v0wd2Bk/c55c3b896614.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                        { id: "es_blend_coklat", nama: "es blend coklat Sultan", harga: 6000, gambar: "https://i.ibb.co.com/whj0WJKh/5a0df23762975.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                    ]       
                 },
-
-
-
                 {
                     id: "salerokito001", nama: "Rumah Makan Salero Kito", jamOperasional: "Senin-minggu 00:00-24:00",
-                    gambar: "https://i.ibb.co.com/y2SjJxN/1746719972510v-Rm-Salero-Kito093363be92e4a9392-3-11zon.jpg", // MODIFIED
+                    gambar: "https://i.ibb.co.com/y2SjJxN/1746719972510v-Rm-Salero-Kito093363be92e4a9392-3-11zon.jpg", 
                     lokasitoko: "km-8",
                     menu: [
-
                         { id: "sk_este_manis", nama: "esteh manis", harga: 8000, gambar: "https://i.ibb.co.com/gbgdf31Q/salerokito0.jpg", extra: [{ nama: "Tanpa extra", harga: 0 }], status: "Aktif" },
                         { id: "sk_jus_mangga", nama: "mangga", harga: 15000, gambar: "https://i.ibb.co.com/Cs8dZTyY/salerokito-2.jpg", extra: [{ nama: "Tanpa extra", harga: 0 }], status: "Aktif" },
                         { id: "sk_jus_jeruk", nama: "jus jeruk", harga: 15000, gambar: "https://i.ibb.co.com/KjKmwkvG/salerokito-1.jpg", extra: [{ nama: "Tanpa extra", harga: 0 }], status: "Aktif" },
@@ -480,100 +502,61 @@
                         { id: "sk_ayam_cabe_hijau", nama: "Ayam goreng cabe hijau", harga: 18000, gambar: "https://i.ibb.co.com/5hLnc1HF/salerokito-5.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
                         { id: "sk_ayam_bumbu", nama: "Ayam Bumbu", harga: 18000, gambar: "https://i.ibb.co.com/Q7b8HwgH/salerokito-7.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
                         { id: "sk_ayam_gulai", nama: "Ayam Gulai", harga: 18000, gambar: "https://i.ibb.co.com/zh2KvL7z/salerokito-4.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-                          ]       
+                    ]       
                 },
-
-
-
-
-{ id: "Rimbozz", nama: "RIMBOZZ", jamOperasional: "Senin-minggu 00:00-24:00",
-                    gambar: "https://i.ibb.co.com/Z1kzzYgJ/1747142636978v-RIMBOZZ093263b2ced310dce-15-11zon.jpg", // MODIFIED
+                { 
+                    id: "Rimbozz", nama: "RIMBOZZ", jamOperasional: "Senin-minggu 00:00-24:00",
+                    gambar: "https://i.ibb.co.com/Z1kzzYgJ/1747142636978v-RIMBOZZ093263b2ced310dce-15-11zon.jpg", 
                     lokasitoko: "km-5",
                     menu: [
- { id: "Ayam_teriyaki", nama: "Ayam Teriyaki", harga: 21000, gambar: "https://i.ibb.co.com/LhzwfNfn/4c8ed85424981-14-11zon.jpg", extra: [{ nama: "Pakai Nasi", harga: 7000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-
-{ id: "Ayam_Saus_tiram", nama: "Ayam Saus Tiram", harga: 21000, gambar: "https://i.ibb.co.com/bjtnDkkg/b17ebe9194978-18-11zon.jpg", extra: [{ nama: "Pakai Nasi", harga: 7000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-
-{ id: "Ayam_Crispy", nama: "Ayam Crispy", harga: 21000, gambar: "https://i.ibb.co.com/wNH2pQ7S/6e8ff81317025-13-11zon.jpg", extra: [{ nama: "Pakai Nasi", harga: 7000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-
-{ id: "Chicky_Friest", nama: "Chicky Fries", harga: 25000, gambar: "https://i.ibb.co.com/1f0HydJj/60b7ff3297537-12-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-
- { id: "Burger", nama: "Rimbozz Burger", harga: 20000, gambar: "https://i.ibb.co.com/fGpcYJxH/8917fc6934141-11-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-
-{ id: "Share_meal", nama: "Share Meal", harga: 35000, gambar: "https://i.ibb.co.com/ZptZRbLk/930bf297f621109296.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-
-{ id: "Nasi_Goreng_Telur", nama: "Nasi Goreng Telur", harga: 18000, gambar: "https://i.ibb.co.com/MkmsKC8R/2ef5d03102752-17-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-
-{ id: "Nasi_Goreng_Spesial", nama: "Nasi Goreng Spesial", harga: 27000, gambar: "https://i.ibb.co.com/S44P8km5/nasi-goreng-spesial.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-
-{ id: "kentang_goreng", nama: "Kentang Goreng", harga: 15000, gambar: "https://i.ibb.co.com/6J8WM4Hz/8749644ed3af705c-1738054565261v-Rimbozz-Kentang-Goreng098163b2cf9b375af-1-11zon.png", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-                          ]       
+                        { id: "Ayam_teriyaki", nama: "Ayam Teriyaki", harga: 21000, gambar: "https://i.ibb.co.com/LhzwfNfn/4c8ed85424981-14-11zon.jpg", extra: [{ nama: "Pakai Nasi", harga: 7000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "Ayam_Saus_tiram", nama: "Ayam Saus Tiram", harga: 21000, gambar: "https://i.ibb.co.com/bjtnDkkg/b17ebe9194978-18-11zon.jpg", extra: [{ nama: "Pakai Nasi", harga: 7000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "Ayam_Crispy", nama: "Ayam Crispy", harga: 21000, gambar: "https://i.ibb.co.com/wNH2pQ7S/6e8ff81317025-13-11zon.jpg", extra: [{ nama: "Pakai Nasi", harga: 7000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "Chicky_Friest", nama: "Chicky Fries", harga: 25000, gambar: "https://i.ibb.co.com/1f0HydJj/60b7ff3297537-12-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                        { id: "Burger", nama: "Rimbozz Burger", harga: 20000, gambar: "https://i.ibb.co.com/fGpcYJxH/8917fc6934141-11-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                        { id: "Share_meal", nama: "Share Meal", harga: 35000, gambar: "https://i.ibb.co.com/ZptZRbLk/930bf297f621109296.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                        { id: "Nasi_Goreng_Telur", nama: "Nasi Goreng Telur", harga: 18000, gambar: "https://i.ibb.co.com/MkmsKC8R/2ef5d03102752-17-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                        { id: "Nasi_Goreng_Spesial", nama: "Nasi Goreng Spesial", harga: 27000, gambar: "https://i.ibb.co.com/S44P8km5/nasi-goreng-spesial.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                        { id: "kentang_goreng", nama: "Kentang Goreng", harga: 15000, gambar: "https://i.ibb.co.com/6J8WM4Hz/8749644ed3af705c-1738054565261v-Rimbozz-Kentang-Goreng098163b2cf9b375af-1-11zon.png", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                    ]       
                 },
-
-
-
-
-{ id: "bakso_krakatau", nama: "BAKSO KRAKATAU", jamOperasional: "Senin-minggu 00:00-24:00",
-                    gambar: "https://i.ibb.co.com/35176nRG/1747244303361v-BAKSOKRAKATAU08896548c5760290e-1-11zon.jpg", // MODIFIED
+                { 
+                    id: "bakso_krakatau", nama: "BAKSO KRAKATAU", jamOperasional: "Senin-minggu 00:00-24:00",
+                    gambar: "https://i.ibb.co.com/35176nRG/1747244303361v-BAKSOKRAKATAU08896548c5760290e-1-11zon.jpg", 
                     lokasitoko: "km-8",
                     menu: [
-{ id: "bakso_Beranak", nama: "Bakso Beranak", harga: 25000, gambar: "https://i.ibb.co.com/PvQQxprX/05e22d3bb0950abc-1737204263648v-Bakso-Telor0728654dd24791160-10-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-{ id: "bakso_krakatau", nama: "Bakso Krakatau", harga: 25000, gambar: "https://i.ibb.co.com/67ZsWPkb/d57f841d73d80989-1737204242679v-Bakso-Krakatau0187654dd1a7cc39d-9-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-{ id: "bakso_mawar", nama: "Bakso Mawar", harga: 20000, gambar: "https://i.ibb.co.com/b5rjXqrt/dfae9f51d505c09f-1737204276629v-Bakso-Mawar-Urat0970654dd28750c55-8-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-{ id: "mie_ayam", nama: "Mie Ayam tanpa Bakso", harga: 20000, gambar: "https://i.ibb.co.com/RpkmWG0L/13a30f9be0520865-1737204270145v-Mie-Ayam-Bakso0198654dd3297a603-7-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-{ id: "mie_ayam_bakso", nama: "Mie Ayam Bakso", harga: 20000, gambar: "https://i.ibb.co.com/r28xv8R4/d1a5b75807086e72-1737204284987v-Mie-Ayam0316654dd34b5698e-6-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-{ id: "bakso_telur", nama: "Bakso Telur", harga: 20000, gambar: "https://i.ibb.co.com/20pf12b4/b9f32af81d557220-1737204257466v-Bakso-Beranak0119654dd2106c9e8-5-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-{ id: "Jus_mangga", nama: "Jus Mangga", harga: 15000, gambar: "https://i.ibb.co.com/cKbF380j/36d62b7a152ab81f-1737205858271v-Jus-Mangga0297654dd4d7371ed-3-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-{ id: "Jus_Jeruk", nama: "Jus jeruk", harga: 15000, gambar: "https://i.ibb.co.com/pvsJNVbX/6dd42d4a3079c1b5-1737205864624v-Jus-Jeruk0542654dd4b05bd97-2-11zon.jpg.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-{ id: "Esteh_Manis", nama: "es teh manis", harga: 5000, gambar: "https://i.ibb.co.com/LDsWG4HN/cc408df01271b1d8-1737205872424v-Teh-Es0204654dd50ce5997-4-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-
-
-
-
-]       
+                        { id: "bakso_Beranak", nama: "Bakso Beranak", harga: 25000, gambar: "https://i.ibb.co.com/PvQQxprX/05e22d3bb0950abc-1737204263648v-Bakso-Telor0728654dd24791160-10-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                        { id: "bakso_krakatau", nama: "Bakso Krakatau", harga: 25000, gambar: "https://i.ibb.co.com/67ZsWPkb/d57f841d73d80989-1737204242679v-Bakso-Krakatau0187654dd1a7cc39d-9-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                        { id: "bakso_mawar", nama: "Bakso Mawar", harga: 20000, gambar: "https://i.ibb.co.com/b5rjXqrt/dfae9f51d505c09f-1737204276629v-Bakso-Mawar-Urat0970654dd28750c55-8-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                        { id: "mie_ayam", nama: "Mie Ayam tanpa Bakso", harga: 20000, gambar: "https://i.ibb.co.com/RpkmWG0L/13a30f9be0520865-1737204270145v-Mie-Ayam-Bakso0198654dd3297a603-7-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                        { id: "mie_ayam_bakso", nama: "Mie Ayam Bakso", harga: 20000, gambar: "https://i.ibb.co.com/r28xv8R4/d1a5b75807086e72-1737204284987v-Mie-Ayam0316654dd34b5698e-6-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                        { id: "bakso_telur", nama: "Bakso Telur", harga: 20000, gambar: "https://i.ibb.co.com/20pf12b4/b9f32af81d557220-1737204257466v-Bakso-Beranak0119654dd2106c9e8-5-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                        { id: "Jus_mangga", nama: "Jus Mangga", harga: 15000, gambar: "https://i.ibb.co.com/cKbF380j/36d62b7a152ab81f-1737205858271v-Jus-Mangga0297654dd4d7371ed-3-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                        { id: "Jus_Jeruk", nama: "Jus jeruk", harga: 15000, gambar: "https://i.ibb.co.com/pvsJNVbX/6dd42d4a3079c1b5-1737205864624v-Jus-Jeruk0542654dd4b05bd97-2-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                        { id: "Esteh_Manis", nama: "es teh manis", harga: 5000, gambar: "https://i.ibb.co.com/LDsWG4HN/cc408df01271b1d8-1737205872424v-Teh-Es0204654dd50ce5997-4-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                    ]       
                 },
-               
-                { id: "mbaknur003", nama: "Warung Mbak Nur", jamOperasional: "Senin-minggu 00:00-24:00",
-                    gambar: "https://i.ibb.co.com/bjYMqPGN/1747139892142v-WARUNGMBAKNUR030563c2a5c006520.jpg", // MODIFIED
+                { 
+                    id: "mbaknur003", nama: "Warung Mbak Nur", jamOperasional: "Senin-minggu 00:00-24:00",
+                    gambar: "https://i.ibb.co.com/bjYMqPGN/1747139892142v-WARUNGMBAKNUR030563c2a5c006520.jpg", 
                     lokasitoko: "km-8",
                     menu: [
                         { id: "pecel_ayam", nama: "Pecel ayam", harga: 17000, gambar: "https://i.ibb.co.com/mrMH0kd0/Pecelayam.jpg", extra: [{nama: "pakai nasi", harga: 5000 }, { nama: "Tanpa nasi", harga: 0 }], status: "Aktif" }, 
-
                         { id: "pecel_lele", nama: "Pecel lele", harga: 17000, gambar: "https://i.ibb.co.com/qLYgSjM3/Pecellele.jpg", extra: [{nama: "pakai nasi", harga: 5000 },{ nama: "Tanpa nasi", harga: 0 }], status: "Aktif" }, 
-
                         { id: "mie_ayam_bakso", nama: "mie ayam bakso", harga: 20000, gambar: "https://i.ibb.co.com/8n7KkGFZ/Mieayambakso.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-                         { id: "mie_ayam", nama: "mie ayam", harga: 15000, gambar: "https://i.ibb.co.com/q3L8myYy/Mieayam.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
-
-                         { id: "bakso", nama: "bakso", harga: 15000, gambar: "https://i.ibb.co.com/vChxBwKY/Bakso.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
-   ]
-                },
-
-
-{ id: "sarapan_mamah_yenni", nama: "Sarapan Mamah yenni", jamOperasional: "Senin-minggu 00:00-24:00",
-                    gambar: "https://i.ibb.co.com/BVJP4dQ1/1747141321148v-Kedai-Mamah-Yenni085863be37e0c2200-1-11zon.jpg", // MODIFIED
-                    lokasitoko: "km-7",
-                    menu: [
-
-
-
+                        { id: "mie_ayam", nama: "mie ayam", harga: 15000, gambar: "https://i.ibb.co.com/q3L8myYy/Mieayam.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+                        { id: "bakso", nama: "bakso", harga: 15000, gambar: "https://i.ibb.co.com/vChxBwKY/Bakso.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
                     ]
+                },
+                { 
+                    id: "sarapan_mamah_yenni", nama: "Sarapan Mamah yenni", jamOperasional: "Senin-minggu 00:00-24:00",
+                    gambar: "https://i.ibb.co.com/BVJP4dQ1/1747141321148v-Kedai-Mamah-Yenni085863be37e0c2200-1-11zon.jpg",
+                    lokasitoko: "km-7",
+                    menu: []
                 }
-
-
-                // You can add more stores here with their respective image URLs
             ];
 
-            const WHATSAPP_ADMIN = "6285266610522"; // Ganti dengan nomor Admin WA yang benar
+            const WHATSAPP_ADMIN = "6285266610522"; 
 
             // --- Element Selectors ---
             const storeListContainer = document.getElementById('store-list-container');
@@ -607,6 +590,48 @@
             let currentOpenStoreId = null;
             let currentPageId = 'home';
             let isStoreModalOpen = false;
+
+            // --- LAZY LOADING IMAGES ---
+            let imageObserver;
+            const placeholderSrc = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // Transparent pixel
+
+            function lazyLoadImage(img) {
+                const src = img.dataset.src;
+                if (!src) return;
+
+                img.onload = () => {
+                    img.classList.add('loaded');
+                };
+                img.onerror = () => {
+                    // console.error(`Gagal memuat gambar: ${src}`);
+                    img.src = placeholderSrc; 
+                    img.classList.add('loaded'); 
+                };
+                img.src = src;
+                img.removeAttribute('data-src');
+            }
+
+            function observeImage(imageElement) {
+                if (imageObserver && imageElement) {
+                    imageObserver.observe(imageElement);
+                }
+            }
+            
+            function initializeImageObserver() {
+                if ('IntersectionObserver' in window) {
+                    imageObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                lazyLoadImage(entry.target);
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, { rootMargin: "0px 0px 200px 0px" }); // Mulai load 200px sebelum masuk viewport
+                } else {
+                    // Fallback: load semua gambar yang punya data-src jika IntersectionObserver tidak didukung
+                    document.querySelectorAll('.lazy-image[data-src]').forEach(img => lazyLoadImage(img));
+                }
+            }
 
             // --- UTILITY FUNCTIONS ---
             function formatPrice(amount) { return `Rp ${amount.toLocaleString('id-ID')}`; }
@@ -677,17 +702,27 @@
             }
 
             function openMenuModal(storeId) {
-                const store = storesData.find(s => s.id === storeId); if (!store) return;
+                // showAppLoader(); // Opsional
+                const store = storesData.find(s => s.id === storeId); 
+                if (!store) { 
+                    // hideAppLoader(); // Opsional
+                    return; 
+                }
                 currentOpenStoreId = storeId;
                 modalStoreName.textContent = store.nama;
-                modalMenuItemsContainer.innerHTML = '';
+                modalMenuItemsContainer.innerHTML = ''; // Clear previous items
                 const storeCurrentlyOpen = isStoreOpen(store.jamOperasional);
                 modalStoreClosedMessage.style.display = storeCurrentlyOpen ? 'none' : 'block';
 
+                const fragment = document.createDocumentFragment();
                 store.menu.forEach(menuItem => {
                     const itemCard = menuItemTemplate.content.cloneNode(true).querySelector('.menu-item-card');
                     itemCard.dataset.menuId = menuItem.id;
-                    itemCard.querySelector('.menu-image').src = menuItem.gambar; // Uses the URL from storesData
+                    
+                    const imgElement = itemCard.querySelector('.menu-image');
+                    imgElement.dataset.src = menuItem.gambar; 
+                    // Placeholder sudah diatur di template HTML
+                    
                     itemCard.querySelector('.menu-name').textContent = menuItem.nama;
                     itemCard.querySelector('.menu-price').textContent = formatPrice(menuItem.harga);
 
@@ -696,7 +731,6 @@
                     const uniqueSelectId = `extras-select-${menuItem.id}-${Date.now()}`;
                     extrasSelect.id = uniqueSelectId;
                     itemCard.querySelector('label[for="menu-item-extras-select-template"]').setAttribute('for', uniqueSelectId);
-
 
                     menuItem.extra.forEach((extra) => {
                         const option = document.createElement('option');
@@ -741,14 +775,18 @@
                     addToCartButton.addEventListener('click', () => {
                         const currentStore = storesData.find(s => s.id === currentOpenStoreId);
                         if (!currentStore || !isStoreOpen(currentStore.jamOperasional)) { showToast('Toko sedang tutup.', 'error'); return; }
-                        if (cart.length > 0 && cart[0].storeId !== store.id) { showToast('Hanya bisa Orderp dari satu toko. Kosongkan keranjang dahulu.', 'error'); return; }
+                        if (cart.length > 0 && cart[0].storeId !== store.id) { showToast('Hanya bisa Order dari satu toko. Kosongkan keranjang dahulu.', 'error'); return; }
 
                         const selectedOptionsNodes = Array.from(extrasSelect.selectedOptions);
-                        if (selectedOptionsNodes.length === 0) { 
-                            showToast('Pilih minimal satu opsi Extra untuk menu ini.', 'error');
-                            extrasSelect.focus();
-                            return;
+                        if (menuItem.extra.length > 0 && selectedOptionsNodes.length === 0) { // Cek jika ada extra tapi tidak dipilih
+                            const defaultExtra = menuItem.extra.find(e => e.nama.toLowerCase().includes("tanpa extra") || e.harga === 0);
+                            if (!defaultExtra) {
+                                showToast('Pilih minimal satu opsi Extra untuk menu ini.', 'error');
+                                extrasSelect.focus();
+                                return;
+                            }
                         }
+
 
                         const selectedExtras = selectedOptionsNodes.map(optionNode => ({
                             name: optionNode.dataset.name,
@@ -760,23 +798,33 @@
 
                         const existingItemIndex = cart.findIndex(item =>
                             item.menuId === menuItem.id && item.storeId === store.id &&
-                            JSON.stringify(item.extras.sort((a,b) => a.name.localeCompare(b.name))) === JSON.stringify(sortedSelectedExtras)
+                            JSON.stringify(item.extras.sort((a,b) => a.name.localeCompare(b.name))) === JSON.stringify(sortedSelectedExtras) &&
+                            item.notes === notes // Perlu cek notes juga jika mau item benar2 unik
                         );
-                        if (existingItemIndex > -1) { showToast(`${menuItem.nama} sudah ada di keranjang dengan extra sama. Ubah Qty di keranjang.`, 'info'); return; }
+                        if (existingItemIndex > -1) { 
+                            // Opsi: update quantity atau beri pesan
+                            // cart[existingItemIndex].quantity += quantity;
+                            showToast(`${menuItem.nama} sudah ada di keranjang dengan extra dan catatan sama. Ubah Qty di keranjang atau ubah catatan.`, 'info'); return; 
+                        }
 
                         cart.push({
                             id: `${store.id}-${menuItem.id}-${Date.now()}`, storeId: store.id, storeName: store.nama,
-                            menuId: menuItem.id, menuName: menuItem.nama, menuImage: menuItem.gambar, // menuImage also gets the URL
+                            menuId: menuItem.id, menuName: menuItem.nama, menuImage: menuItem.gambar, 
                             basePrice: menuItem.harga, extras: sortedSelectedExtras, quantity: quantity, notes: notes,
                             orderTime: new Date().toISOString()
                         });
                         saveCart();
                         showToast(`${menuItem.nama} berhasil ditambahkan!`, 'success');
                     });
-                    modalMenuItemsContainer.appendChild(itemCard);
+                    fragment.appendChild(itemCard);
                 });
+                modalMenuItemsContainer.appendChild(fragment);
+                // Observe new images in modal
+                modalMenuItemsContainer.querySelectorAll('.lazy-image[data-src]').forEach(img => observeImage(img));
+
                 storeModal.style.display = 'block'; isStoreModalOpen = true;
                 history.pushState({ modal: 'storeMenuOpen', storeId: store.id, pageBeforeModal: currentPageId }, "Menu Toko", `#${currentPageId}/toko/${store.id}`);
+                // hideAppLoader(); // Opsional
             }
 
             function closeMenuModal() {
@@ -803,23 +851,41 @@
                 if (isStoreModalOpen) { 
                     storeModal.style.display = 'none'; isStoreModalOpen = false; currentOpenStoreId = null;
                     const pageToRestore = (state && state.pageBeforeModal) ? state.pageBeforeModal : 'home';
-                    showPage(pageToRestore); 
-                     history.replaceState({ page: pageToRestore }, `Page ${pageToRestore}`, `#${pageToRestore}`);
+                     // Tidak perlu showPage() disini karena akan memicu pushState baru
+                     // Cukup update UI navigasi bawah
+                    bottomNavButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.page === pageToRestore));
+                    currentPageId = pageToRestore;
+                    // Pastikan URL hash juga sesuai tanpa pushState baru
+                    if (location.hash !== `#${pageToRestore}`) {
+                         history.replaceState({ page: pageToRestore }, `Page ${pageToRestore}`, `#${pageToRestore}`);
+                    }
                     return;
                 }
 
                 if (state && state.page) {
-                    showPage(state.page);
-                } else if (state && state.modal === 'storeMenuOpen' && state.pageBeforeModal) {
-                    storeModal.style.display = 'none'; isStoreModalOpen = false; currentOpenStoreId = null;
-                    showPage(state.pageBeforeModal);
-                     history.replaceState({ page: state.pageBeforeModal }, `Page ${state.pageBeforeModal}`, `#${state.pageBeforeModal}`);
+                    showPage(state.page); // showPage akan menangani pushState jika diperlukan
                 } else if (!state && location.hash === "") { 
                      showPage('home');
-                     history.replaceState({ page: 'home' }, 'Home', '#home'); 
                 } else if (!state && currentPageId !== 'home') { 
                      showPage('home');
-                     history.replaceState({ page: 'home' }, 'Home', '#home');
+                } else if (location.hash) { // Handle refresh dengan hash
+                    const hashParts = window.location.hash.substring(1).split('/');
+                    const pageFromUrl = hashParts[0];
+                    const validPagesForDirectNav = ['home', 'keranjang', 'riwayat'];
+                    if (validPagesForDirectNav.includes(pageFromUrl)) {
+                        showPage(pageFromUrl);
+                         if (hashParts.length > 2 && hashParts[1] === 'toko' && hashParts[2]) {
+                            const storeIdFromUrl = hashParts[2];
+                            const storeExists = storesData.find(s => s.id === storeIdFromUrl);
+                            if (storeExists) {
+                                setTimeout(() => openMenuModal(storeIdFromUrl), 50); // delay agar page render
+                            }
+                        }
+                    } else {
+                        showPage('home');
+                    }
+                } else {
+                     showPage('home');
                 }
             });
 
@@ -832,18 +898,25 @@
                     store.menu.some(menuItem => menuItem.nama.toLowerCase().includes(lowerFilterText))
                 );
                 if (filteredStores.length === 0) { storeListContainer.innerHTML = '<p>Tidak ada toko atau menu yang cocok.</p>'; return; }
+                
+                const fragment = document.createDocumentFragment();
                 filteredStores.forEach(store => {
                     const card = storeCardTemplate.content.cloneNode(true).querySelector('.store-card');
                     card.dataset.storeId = store.id;
-                    card.querySelector('.store-image').src = store.gambar;  // Uses the URL from storesData
+                    
+                    const imgElement = card.querySelector('.store-image');
+                    imgElement.dataset.src = store.gambar;  
+                    
                     card.querySelector('.store-name').textContent = store.nama;
                     card.querySelector('.store-hours').textContent = `Jam: ${store.jamOperasional}`;
                     const overlay = card.querySelector('.store-status-overlay');
                     if (!isStoreOpen(store.jamOperasional)) { card.classList.add('closed'); overlay.style.display = 'flex'; }
                     else { overlay.style.display = 'none'; }
                     card.addEventListener('click', () => openMenuModal(store.id));
-                    storeListContainer.appendChild(card);
+                    fragment.appendChild(card);
                 });
+                storeListContainer.appendChild(fragment);
+                storeListContainer.querySelectorAll('.lazy-image[data-src]').forEach(img => observeImage(img));
             }
             searchBar.addEventListener('input', (e) => renderStores(e.target.value));
 
@@ -858,10 +931,15 @@
                 }
                 if (emptyCartMessage) emptyCartMessage.style.display = 'none';
                 cartSummaryDiv.style.display = 'block';
+
+                const fragment = document.createDocumentFragment();
                 cart.forEach((item, index) => {
                     const card = cartItemTemplate.content.cloneNode(true).querySelector('.cart-item-card');
                     card.dataset.cartItemId = item.id;
-                    card.querySelector('.cart-item-image').src = item.menuImage; // Uses the URL stored in the cart item
+                    
+                    const imgElement = card.querySelector('.cart-item-image');
+                    imgElement.dataset.src = item.menuImage; 
+
                     card.querySelector('.cart-item-name').textContent = item.menuName;
                     card.querySelector('.cart-item-store').textContent = `Dari: ${item.storeName}`;
                     card.querySelector('.cart-item-price').textContent = `Harga: ${formatPrice(item.basePrice)}`;
@@ -872,12 +950,16 @@
                     const itemSubtotal = (item.basePrice + item.extras.reduce((sum, e) => sum + e.price, 0)) * item.quantity;
                     card.querySelector('.cart-item-subtotal').textContent = formatPrice(itemSubtotal);
                     card.querySelector('.cart-item-order-time').textContent = `Ditambahkan: ${new Date(item.orderTime).toLocaleString('id-ID')}`;
+                    
                     card.querySelector('.remove-from-cart-btn').addEventListener('click', () => {
                         cart.splice(index, 1); saveCart(); renderCart();
                         showToast('Item dihapus dari keranjang.', 'info');
                     });
-                    cartItemsContainer.appendChild(card);
+                    fragment.appendChild(card);
                 });
+                cartItemsContainer.appendChild(fragment);
+                cartItemsContainer.querySelectorAll('.lazy-image[data-src]').forEach(img => observeImage(img));
+                
                 updateCartSummary(); updateCartBadge();
             }
             function calculateDeliveryFee(storeKm, destinationKm) {
@@ -933,15 +1015,10 @@
                 const deliveryFee = parseInt(deliveryFeeSpan.textContent.replace(/[^0-9]/g, ''));
                 const totalPayment = subtotal + deliveryFee;
                 const now = new Date();
-                // Format tanggal dan waktu: DD/MM/YYYY HH:MM (misal: 31/05/2025 23:15)
                 const orderDateTime = now.toLocaleString('id-ID', { 
-                    day: '2-digit', 
-                    month: '2-digit', 
-                    year: 'numeric', 
-                    hour: '2-digit', 
-                    minute: '2-digit',
-                    hour12: false // Gunakan format 24 jam
-                }).replace(/\./g, ':'); // Ganti titik dengan titik dua untuk waktu jika ada (tergantung regional setting)
+                    day: '2-digit', month: '2-digit', year: 'numeric', 
+                    hour: '2-digit', minute: '2-digit', hour12: false 
+                }).replace(/\./g, ':');
 
                 let orderMessage = `Halo Admin, Tolong Proses Orderan saya:\n`;
                 let storeOrders = {};
@@ -949,18 +1026,19 @@
                     if (!storeOrders[item.storeName]) storeOrders[item.storeName] = [];
                     let itemText = `*${item.menuName}* - ${item.quantity}x (${formatPrice(item.basePrice)}/item)\n`;
                     if (item.extras.length > 0) itemText += `  Extra: ${item.extras.map(e => e.name + ' (' + formatPrice(e.price) + ')').join(', ')}\n`;
-                    if (item.notes) itemText += `  Catatan: ${item.notes}\n\n`;
+                    if (item.notes) itemText += `  Catatan: ${item.notes}\n`; // Kurangi satu \n agar tidak terlalu banyak spasi
                     storeOrders[item.storeName].push(itemText);
                 });
                 for (const storeName in storeOrders) {
-                    orderMessage += `di: *${storeName}*\n\n`; orderMessage += storeOrders[storeName].join(''); orderMessage += `\n`;
+                    orderMessage += `\nDi: *${storeName.toUpperCase()}*\n`; // Nama toko di uppercase
+                    orderMessage += storeOrders[storeName].join('\n'); // Tambahkan newline antar item
                 }
-                orderMessage += `Subtotal Pesanan: *${formatPrice(subtotal)}*\n`;
+                orderMessage += `\nSubtotal Pesanan: *${formatPrice(subtotal)}*\n`;
                 orderMessage += `Ongkos Kirim: *${formatPrice(deliveryFee)}*\n`;
                 orderMessage += `*TOTAL PEMBAYARAN: ${formatPrice(totalPayment)}*\n\n`;
                 orderMessage += `Lokasi Pengantaran: ${selectedLocationText}\n`;
                 orderMessage += `Detail Lokasi: ${deliveryDetail}\n`;
-                orderMessage += `*Waktu Order: ${orderDateTime}*\n`; 
+                orderMessage += `*Waktu Order: ${orderDateTime}*\n\n`; 
                 orderMessage += `Terima kasih sudah Menggunakan aplikasi *Sipora Food*. mohon tunggu Konfirmasi Kami!`;
 
                 const whatsappUrl = `https://wa.me/${WHATSAPP_ADMIN}?text=${encodeURIComponent(orderMessage)}`;
@@ -975,20 +1053,20 @@
 
                 const lastHistory = orderHistory.length > 0 ? orderHistory[orderHistory.length - 1] : null;
                 if (!lastHistory ||
-                    JSON.stringify(lastHistory.items.map(i => ({s:i.storeId, m:i.menuId, q:i.quantity, e:i.extras.map(ex => ({n:ex.name, p:ex.price})).sort((a,b)=>a.n.localeCompare(b.n)) }))) !==
-                    JSON.stringify(historyEntry.items.map(i => ({s:i.storeId, m:i.menuId, q:i.quantity, e:i.extras.map(ex => ({n:ex.name, p:ex.price})).sort((a,b)=>a.n.localeCompare(b.n)) }))) ||
+                    JSON.stringify(lastHistory.items.map(i => ({s:i.storeId, m:i.menuId, q:i.quantity, e:i.extras.map(ex => ({n:ex.name, p:ex.price})).sort((a,b)=>a.n.localeCompare(b.n)), notes: i.notes }))) !==
+                    JSON.stringify(historyEntry.items.map(i => ({s:i.storeId, m:i.menuId, q:i.quantity, e:i.extras.map(ex => ({n:ex.name, p:ex.price})).sort((a,b)=>a.n.localeCompare(b.n)), notes: i.notes }))) ||
                     lastHistory.deliveryLocation !== historyEntry.deliveryLocation ||
                     lastHistory.deliveryLocationDetail !== historyEntry.deliveryLocationDetail ||
                     lastHistory.totalAmount !== historyEntry.totalAmount) {
                     orderHistory.push(historyEntry); saveHistory();
                 }
 
-
                 cart = []; saveCart();
                 deliveryLocationSelect.value = ""; deliveryLocationDetailInput.value = "";
-                renderCart();
+                renderCart(); // Ini akan mengupdate UI keranjang menjadi kosong
                 showToast('Pesanan dialihkan ke WhatsApp Admin...', 'success');
-                window.open(whatsappUrl, '_blank'); showPage('riwayat');
+                window.open(whatsappUrl, '_blank'); 
+                showPage('riwayat'); // Pindah ke halaman riwayat setelah order
             });
             function renderHistory() {
                 historyItemsContainer.innerHTML = '';
@@ -1010,6 +1088,11 @@
                             extrasDiv.textContent = `Extra: ${item.extras.map(e => e.name).join(', ')}`;
                             itemDiv.appendChild(extrasDiv);
                         }
+                        if (item.notes) {
+                            const notesDiv = document.createElement('div'); notesDiv.className = 'extras'; // Menggunakan class yang sama untuk styling
+                            notesDiv.textContent = `Catatan: ${item.notes}`;
+                            itemDiv.appendChild(notesDiv);
+                        }
                         historyBody.appendChild(itemDiv);
                     });
                     card.querySelector('.history-total-amount').textContent = formatPrice(histEntry.totalAmount);
@@ -1029,7 +1112,10 @@
                             } else if (!confirm('Ganti isi keranjang saat ini dengan item dari pesanan riwayat ini?')) { 
                                 return;
                             }
+                        } else {
+                            cart = []; // Pastikan keranjang kosong jika sebelumnya tidak ada item
                         }
+
 
                         const reorderableItems = histEntry.items.filter(histItem => {
                             const storeOfHistItem = storesData.find(s => s.id === histItem.storeId);
@@ -1045,9 +1131,15 @@
                             showToast('Semua item dari pesanan ini tidak lagi tersedia atau toko yang bersangkutan tutup.', 'error');
                             return;
                         }
+                        
+                        // cart = JSON.parse(JSON.stringify(reorderableItems)); // Ini akan membuat ID baru, mungkin tidak diinginkan jika mau melacak
+                        // Buat ulang item untuk cart dengan ID baru tapi data sama
+                        cart = reorderableItems.map(item => ({
+                            ...JSON.parse(JSON.stringify(item)), // Deep clone item lama
+                            id: `${item.storeId}-${item.menuId}-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`, // Buat ID unik baru
+                            orderTime: new Date().toISOString() // Update waktu order
+                        }));
 
-                        cart = JSON.parse(JSON.stringify(reorderableItems)); 
-                        cart.forEach(item => item.orderTime = new Date().toISOString()); 
                         saveCart();
 
                         const historicLocationText = histEntry.deliveryLocation;
@@ -1064,32 +1156,40 @@
             }
 
             // --- INITIALIZATION ---
-            renderStores();
+            initializeImageObserver(); 
+            renderStores(); 
+
             const validPages = ['home', 'keranjang', 'riwayat']; 
             const hashParts = window.location.hash.substring(1).split('/');
-            const pageFromUrl = hashParts[0];
-            let startPage = validPages.includes(pageFromUrl) ? pageFromUrl : 'home';
+            let pageFromUrl = hashParts[0];
+            let storeIdFromUrl = (hashParts.length > 2 && hashParts[1] === 'toko') ? hashParts[2] : null;
+            
+            let startPage = 'home';
+            if (validPages.includes(pageFromUrl)) {
+                startPage = pageFromUrl;
+            }
 
-            showPage(startPage);
-            history.replaceState({ page: startPage }, `Page ${startPage}`, `#${startPage}`); 
-
-            if (hashParts.length > 2 && hashParts[1] === 'toko' && hashParts[2]) {
-                const storeIdFromUrl = hashParts[2];
+            showPage(startPage); // Ini akan set history.state
+            
+            // Jika ada storeId dari URL, buka modal setelah halaman dimuat
+            if (storeIdFromUrl) {
                 const storeExists = storesData.find(s => s.id === storeIdFromUrl);
                 if (storeExists) {
-                    if (currentPageId !== storeExists.pageBeforeModal && validPages.includes(storeExists.pageBeforeModal)) {
-                        // If the modal was bookmarked, and a different page was its origin.
-                        // This logic is a bit complex due to the popstate handling.
-                        // For simplicity, we might just show the home page then the modal.
-                        // Or ensure the `pageBeforeModal` is correctly used.
-                        // Current popstate logic aims to restore the page before modal.
-                    } else if (currentPageId !== 'home' && startPage === 'home'){ // Default to home if no better context
-                        showPage('home');
-                        history.replaceState({ page: 'home' }, `Page home`, `#home`);
-                    }
+                    // Tambahkan state modal ke history yang sudah ada (dari showPage)
+                    history.replaceState({ 
+                        page: startPage, 
+                        modal: 'storeMenuOpen', 
+                        storeId: storeIdFromUrl,
+                        pageBeforeModal: startPage // atau dari state sebelumnya jika ada
+                    }, `Menu Toko`, `#${startPage}/toko/${storeIdFromUrl}`);
                     openMenuModal(storeIdFromUrl);
                 }
+            } else {
+                // Jika tidak ada modal, pastikan state history awal benar
+                 history.replaceState({ page: startPage }, `Page ${startPage}`, `#${startPage}`);
             }
+            
+            setTimeout(hideAppLoader, 250); 
         });
     </script>
 </body>
