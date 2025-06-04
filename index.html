@@ -333,20 +333,20 @@
                     <p>Total Orderan: <span id="cart-subtotal">Rp 0</span></p>
                     <div class="delivery-location-section">
                         <select id="delivery-location">
-                            <option value="">-- 📍Pilih Lokasi --</option>
+                            <option value="">-- 📍Pilih Lokasi Antar--</option>
                             <option value="0">Km-0</option><option value="1">Km-1</option><option value="2">Km-2</option>
                             <option value="3">Km-3</option><option value="4">Km-4</option><option value="5">Km-5</option>
                             <option value="6">Km-6</option><option value="7">Km-7</option><option value="8">Km-8</option>
                             <option value="9">Km-9</option><option value="10">Km-10</option>
                         </select>
-                        <textarea id="delivery-location-detail" placeholder="Detail alamat WAJIB di isi. Misal: Gang bulian Rumah ke-4 sebelah kiri atau. A/n Nia RSUD Ruang Kainau"></textarea>
+                        <textarea id="delivery-location-detail" placeholder="Detail Lokasi Antar, Misal: Gang bulian Rumah ke-4 sebelah kiri atau. A/n Nia RSUD Ruang Kainau"></textarea>
 
                         <p>Ongkir: <span id="delivery-fee">Rp 0</span></p>
                         <small>Pastikan chatmu terkirim ke Whatsapp admin agar orderanmu di proses yah</small>
                     </div>
                     <hr>
-                    <h3>Total Ore=deran + Ongkir: <span id="cart-total-payment">Rp 0</span></h3>
-                    <button id="send-order-btn" class="button-primary" disabled>Kirim Pesanan ke Admin</button>
+                    <h3>Total Orderan + Ongkir: <span id="cart-total-payment">Rp 0</span></h3>
+                    <button id="send-order-btn" class="button-primary" disabled>Kirim Orderan ke Whatsapp Admin</button>
                 </div>
             </main>
         </div>
@@ -439,9 +439,32 @@
         document.addEventListener('DOMContentLoaded', () => {
             const storesData = [
 
+{
+                    id: "dapoerwawao003", nama: "Dapoer Wawa", jamOperasional: "Senin-minggu 00:00-24:00",
+                    gambar: "https://i.ibb.co.com/gMv6VZv8/1746720000453v-DAPOERWAWA050163b66a0266b3a-2-11zon.jpg", // MODIFIED
+                    lokasitoko: "km-8",
+                    menu: [
+{ id: "sk_ayam_geprek", nama: "Ayam geprek", harga: 20000, gambar: "https://i.ibb.co.com/xq07tNLj/4915c85728836.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+
+{ id: "sk_pecel-lele", nama: "Pecel lele", harga: 17000, gambar: "https://i.ibb.co.com/JFd7dGnS/3fe1541ea240913106.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+
+{ id: "mie Goreng_telur", nama: "mie Goreng pedas + telur", harga: 15000, gambar: "https://i.ibb.co.com/G4DStk1N/838a56678862.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+
+{ id: "teh_hijau_original", nama: "teh hijau Original", harga: 5000, gambar: "https://i.ibb.co.com/35LmPnvL/a0d1f08963198.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+
+{ id: "teh_hijau_susu", nama: "teh hijau + Susu", harga: 6000, gambar: "https://i.ibb.co.com/jPZgXPRM/2282969931308.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+
+{ id: "es_blend_beludru", nama: "es blend Beludru", harga: 6000, gambar: "https://i.ibb.co.com/v0wd2Bk/c55c3b896614.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+
+{ id: "es_blend_coklat", nama: "es blend coklat Sultan", harga: 6000, gambar: "https://i.ibb.co.com/whj0WJKh/5a0df23762975.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+]       
+                },
+
+
+
                 {
                     id: "salerokito001", nama: "Rumah Makan Salero Kito", jamOperasional: "Senin-minggu 00:00-24:00",
-                    gambar: "https://i.ibb.co.com/2Ym67csr/salerokito-13.jpg", // MODIFIED
+                    gambar: "https://i.ibb.co.com/y2SjJxN/1746719972510v-Rm-Salero-Kito093363be92e4a9392-3-11zon.jpg", // MODIFIED
                     lokasitoko: "km-8",
                     menu: [
 
@@ -449,19 +472,78 @@
                         { id: "sk_jus_mangga", nama: "mangga", harga: 15000, gambar: "https://i.ibb.co.com/Cs8dZTyY/salerokito-2.jpg", extra: [{ nama: "Tanpa extra", harga: 0 }], status: "Aktif" },
                         { id: "sk_jus_jeruk", nama: "jus jeruk", harga: 15000, gambar: "https://i.ibb.co.com/KjKmwkvG/salerokito-1.jpg", extra: [{ nama: "Tanpa extra", harga: 0 }], status: "Aktif" },
                         { id: "sk_jus_alupakat", nama: "jus alpukat", harga: 15000, gambar: "https://i.ibb.co.com/1YRfdfDr/salerokito-10.jpg", extra: [{ nama: "Tanpa extra", harga: 0 }], status: "Aktif" },
-                        { id: "sk_ikan_goreng_cabe", nama: "ikan goreng cabe hijau", harga: 18000, gambar: "https://i.ibb.co.com/5hLnc1HF/salerokito-5.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-                        { id: "sk_ikan_bakar", nama: "ikan Bakar", harga: 18000, gambar: "https://i.ibb.co.com/TBSQ49Dx/salerokito-3.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-                        { id: "sk_ikan_gulai", nama: "ikan gulai", harga: 18000, gambar: "https://i.ibb.co.com/7xLLQzZg/salerokito-6.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-                        { id: "sk_ayam_bakar", nama: "Ayam Bakar", harga: 18000, gambar: "https://i.ibb.co.com/VYzqQnD1/salerokito-8.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-                        { id: "sk_ayam_kecap", nama: "Ayam kecap", harga: 18000, gambar: "https://i.ibb.co.com/dFPGB8Z/salerokito-9.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-                        { id: "sk_ayam_cabe_hijau", nama: "Ayam goreng cabe hijau", harga: 18000, gambar: "https://i.ibb.co.com/5hLnc1HF/salerokito-5.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-                        { id: "sk_ayam_bumbu", nama: "Ayam Bumbu", harga: 18000, gambar: "https://i.ibb.co.com/Q7b8HwgH/salerokito-7.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
-                        { id: "sk_ayam_gulai", nama: "Ayam Gulai", harga: 18000, gambar: "https://i.ibb.co.com/zh2KvL7z/salerokito-4.jpg", extra: [{ nama: "Pakai Putih", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "sk_ikan_goreng_cabe", nama: "ikan goreng cabe hijau", harga: 18000, gambar: "https://i.ibb.co.com/5hLnc1HF/salerokito-5.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "sk_ikan_bakar", nama: "ikan Bakar", harga: 18000, gambar: "https://i.ibb.co.com/TBSQ49Dx/salerokito-3.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "sk_ikan_gulai", nama: "ikan gulai", harga: 18000, gambar: "https://i.ibb.co.com/7xLLQzZg/salerokito-6.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "sk_ayam_bakar", nama: "Ayam Bakar", harga: 18000, gambar: "https://i.ibb.co.com/VYzqQnD1/salerokito-8.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "sk_ayam_kecap", nama: "Ayam kecap", harga: 18000, gambar: "https://i.ibb.co.com/dFPGB8Z/salerokito-9.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "sk_ayam_cabe_hijau", nama: "Ayam goreng cabe hijau", harga: 18000, gambar: "https://i.ibb.co.com/5hLnc1HF/salerokito-5.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "sk_ayam_bumbu", nama: "Ayam Bumbu", harga: 18000, gambar: "https://i.ibb.co.com/Q7b8HwgH/salerokito-7.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+                        { id: "sk_ayam_gulai", nama: "Ayam Gulai", harga: 18000, gambar: "https://i.ibb.co.com/zh2KvL7z/salerokito-4.jpg", extra: [{ nama: "Pakai Nasi", harga: 5000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
                           ]       
+                },
+
+
+
+
+{ id: "Rimbozz", nama: "RIMBOZZ", jamOperasional: "Senin-minggu 00:00-24:00",
+                    gambar: "https://i.ibb.co.com/Z1kzzYgJ/1747142636978v-RIMBOZZ093263b2ced310dce-15-11zon.jpg", // MODIFIED
+                    lokasitoko: "km-5",
+                    menu: [
+ { id: "Ayam_teriyaki", nama: "Ayam Teriyaki", harga: 21000, gambar: "https://i.ibb.co.com/LhzwfNfn/4c8ed85424981-14-11zon.jpg", extra: [{ nama: "Pakai Nasi", harga: 7000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+
+{ id: "Ayam_Saus_tiram", nama: "Ayam Saus Tiram", harga: 21000, gambar: "https://i.ibb.co.com/bjtnDkkg/b17ebe9194978-18-11zon.jpg", extra: [{ nama: "Pakai Nasi", harga: 7000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+
+{ id: "Ayam_Crispy", nama: "Ayam Crispy", harga: 21000, gambar: "https://i.ibb.co.com/wNH2pQ7S/6e8ff81317025-13-11zon.jpg", extra: [{ nama: "Pakai Nasi", harga: 7000 }, { nama: "Tanpa Nasi", harga: 0 }], status: "Aktif" },
+
+{ id: "Chicky_Friest", nama: "Chicky Fries", harga: 25000, gambar: "https://i.ibb.co.com/1f0HydJj/60b7ff3297537-12-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+
+ { id: "Burger", nama: "Rimbozz Burger", harga: 20000, gambar: "https://i.ibb.co.com/fGpcYJxH/8917fc6934141-11-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+
+{ id: "Share_meal", nama: "Share Meal", harga: 35000, gambar: "https://i.ibb.co.com/ZptZRbLk/930bf297f621109296.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+
+{ id: "Nasi_Goreng_Telur", nama: "Nasi Goreng Telur", harga: 18000, gambar: "https://i.ibb.co.com/MkmsKC8R/2ef5d03102752-17-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+
+{ id: "Nasi_Goreng_Spesial", nama: "Nasi Goreng Spesial", harga: 27000, gambar: "https://i.ibb.co.com/S44P8km5/nasi-goreng-spesial.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+
+{ id: "kentang_goreng", nama: "Kentang Goreng", harga: 15000, gambar: "https://i.ibb.co.com/6J8WM4Hz/8749644ed3af705c-1738054565261v-Rimbozz-Kentang-Goreng098163b2cf9b375af-1-11zon.png", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+                          ]       
+                },
+
+
+
+
+{ id: "bakso_krakatau", nama: "BAKSO KRAKATAU", jamOperasional: "Senin-minggu 00:00-24:00",
+                    gambar: "https://i.ibb.co.com/35176nRG/1747244303361v-BAKSOKRAKATAU08896548c5760290e-1-11zon.jpg", // MODIFIED
+                    lokasitoko: "km-8",
+                    menu: [
+{ id: "bakso_Beranak", nama: "Bakso Beranak", harga: 25000, gambar: "https://i.ibb.co.com/PvQQxprX/05e22d3bb0950abc-1737204263648v-Bakso-Telor0728654dd24791160-10-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+{ id: "bakso_krakatau", nama: "Bakso Krakatau", harga: 25000, gambar: "https://i.ibb.co.com/67ZsWPkb/d57f841d73d80989-1737204242679v-Bakso-Krakatau0187654dd1a7cc39d-9-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+{ id: "bakso_mawar", nama: "Bakso Mawar", harga: 20000, gambar: "https://i.ibb.co.com/b5rjXqrt/dfae9f51d505c09f-1737204276629v-Bakso-Mawar-Urat0970654dd28750c55-8-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+{ id: "mie_ayam", nama: "Mie Ayam tanpa Bakso", harga: 20000, gambar: "https://i.ibb.co.com/RpkmWG0L/13a30f9be0520865-1737204270145v-Mie-Ayam-Bakso0198654dd3297a603-7-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+{ id: "mie_ayam_bakso", nama: "Mie Ayam Bakso", harga: 20000, gambar: "https://i.ibb.co.com/r28xv8R4/d1a5b75807086e72-1737204284987v-Mie-Ayam0316654dd34b5698e-6-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+{ id: "bakso_telur", nama: "Bakso Telur", harga: 20000, gambar: "https://i.ibb.co.com/20pf12b4/b9f32af81d557220-1737204257466v-Bakso-Beranak0119654dd2106c9e8-5-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+{ id: "Jus_mangga", nama: "Jus Mangga", harga: 15000, gambar: "https://i.ibb.co.com/cKbF380j/36d62b7a152ab81f-1737205858271v-Jus-Mangga0297654dd4d7371ed-3-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+{ id: "Jus_Jeruk", nama: "Jus jeruk", harga: 15000, gambar: "https://i.ibb.co.com/pvsJNVbX/6dd42d4a3079c1b5-1737205864624v-Jus-Jeruk0542654dd4b05bd97-2-11zon.jpg.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+{ id: "Esteh_Manis", nama: "es teh manis", harga: 5000, gambar: "https://i.ibb.co.com/LDsWG4HN/cc408df01271b1d8-1737205872424v-Teh-Es0204654dd50ce5997-4-11zon.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
+
+
+
+
+
+]       
                 },
                
                 { id: "mbaknur003", nama: "Warung Mbak Nur", jamOperasional: "Senin-minggu 00:00-24:00",
-                    gambar: "https://i.ibb.co.com/rGBCKJx7/mbaknur.jpg", // MODIFIED
+                    gambar: "https://i.ibb.co.com/bjYMqPGN/1747139892142v-WARUNGMBAKNUR030563c2a5c006520.jpg", // MODIFIED
                     lokasitoko: "km-8",
                     menu: [
                         { id: "pecel_ayam", nama: "Pecel ayam", harga: 17000, gambar: "https://i.ibb.co.com/mrMH0kd0/Pecelayam.jpg", extra: [{nama: "pakai nasi", harga: 5000 }, { nama: "Tanpa nasi", harga: 0 }], status: "Aktif" }, 
@@ -473,6 +555,17 @@
                          { id: "mie_ayam", nama: "mie ayam", harga: 15000, gambar: "https://i.ibb.co.com/q3L8myYy/Mieayam.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" }, 
 
                          { id: "bakso", nama: "bakso", harga: 15000, gambar: "https://i.ibb.co.com/vChxBwKY/Bakso.jpg", extra: [{ nama: "Tanpa Extra", harga: 0 }], status: "Aktif" },
+   ]
+                },
+
+
+{ id: "sarapan_mamah_yenni", nama: "Sarapan Mamah yenni", jamOperasional: "Senin-minggu 00:00-24:00",
+                    gambar: "https://i.ibb.co.com/BVJP4dQ1/1747141321148v-Kedai-Mamah-Yenni085863be37e0c2200-1-11zon.jpg", // MODIFIED
+                    lokasitoko: "km-7",
+                    menu: [
+
+
+
                     ]
                 }
 
@@ -648,7 +741,7 @@
                     addToCartButton.addEventListener('click', () => {
                         const currentStore = storesData.find(s => s.id === currentOpenStoreId);
                         if (!currentStore || !isStoreOpen(currentStore.jamOperasional)) { showToast('Toko sedang tutup.', 'error'); return; }
-                        if (cart.length > 0 && cart[0].storeId !== store.id) { showToast('Hanya bisa pesan dari satu toko. Kosongkan keranjang dahulu.', 'error'); return; }
+                        if (cart.length > 0 && cart[0].storeId !== store.id) { showToast('Hanya bisa Orderp dari satu toko. Kosongkan keranjang dahulu.', 'error'); return; }
 
                         const selectedOptionsNodes = Array.from(extrasSelect.selectedOptions);
                         if (selectedOptionsNodes.length === 0) { 
